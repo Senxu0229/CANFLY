@@ -1,0 +1,152 @@
+{
+  "event": {
+    "name": "Alau Dam failure, Maiduguri",
+    "date": "2024-09-10"
+  },
+  "aoi_name": "Maiduguri, Borno State, Nigeria",
+  "bbox": null,
+  "max_size": 1400,
+  "water_mode": "auto",
+  "db_threshold": -18.0,
+  "radar_db_range": [
+    -25.0,
+    0.0
+  ],
+  "water": [
+    {
+      "date": "2024-10-09",
+      "file": "incoming_mock/water_20241009.tif",
+      "scene_id": "water_20241009"
+    },
+    {
+      "date": "2024-10-15",
+      "file": "incoming_mock/water_20241015.tif",
+      "scene_id": "water_20241015"
+    },
+    {
+      "date": "2024-10-22",
+      "file": "incoming_mock/water_20241022.tif",
+      "scene_id": "water_20241022"
+    },
+    {
+      "date": "2024-10-26",
+      "file": "incoming_mock/water_20241026.tif",
+      "scene_id": "water_20241026"
+    },
+    {
+      "date": "2024-11-19",
+      "file": "incoming_mock/water_20241119.tif",
+      "scene_id": "water_20241119"
+    },
+    {
+      "date": "2024-11-26",
+      "file": "incoming_mock/water_20241126.tif",
+      "scene_id": "water_20241126"
+    },
+    {
+      "date": "2024-12-02",
+      "file": "incoming_mock/water_20241202.tif",
+      "scene_id": "water_20241202"
+    },
+    {
+      "date": "2025-01-06",
+      "file": "incoming_mock/water_20250106.tif",
+      "scene_id": "water_20250106"
+    }
+  ],
+  "radar": [
+    {
+      "date": "2024-10-09",
+      "file": "incoming_mock/sigma0_db_20241009.tif"
+    },
+    {
+      "date": "2024-10-15",
+      "file": "incoming_mock/sigma0_db_20241015.tif"
+    },
+    {
+      "date": "2024-10-22",
+      "file": "incoming_mock/sigma0_db_20241022.tif"
+    },
+    {
+      "date": "2024-10-26",
+      "file": "incoming_mock/sigma0_db_20241026.tif"
+    },
+    {
+      "date": "2024-11-19",
+      "file": "incoming_mock/sigma0_db_20241119.tif"
+    },
+    {
+      "date": "2024-11-26",
+      "file": "incoming_mock/sigma0_db_20241126.tif"
+    },
+    {
+      "date": "2024-12-02",
+      "file": "incoming_mock/sigma0_db_20241202.tif"
+    },
+    {
+      "date": "2025-01-06",
+      "file": "incoming_mock/sigma0_db_20250106.tif"
+    }
+  ],
+  "reference_water": "incoming_mock/perm_water.tif",
+  "cropland": "incoming_mock/worldcover.tif",
+  "cropland_values": [
+    40
+  ],
+  "units": "incoming_mock/places.geojson",
+  "buildings": "incoming_mock/buildings.geojson",
+  "grid_km": 1.0,
+  "aux": [
+    {
+      "id": "rainfall",
+      "name": "Rainfall",
+      "unit": "mm",
+      "ramp": "rain",
+      "range": [
+        0,
+        150
+      ],
+      "items": [
+        {
+          "date": "2024-09-01",
+          "file": "incoming_mock/rain_20240901.tif"
+        },
+        {
+          "date": "2024-09-11",
+          "file": "incoming_mock/rain_20240911.tif"
+        },
+        {
+          "date": "2024-09-21",
+          "file": "incoming_mock/rain_20240921.tif"
+        },
+        {
+          "date": "2024-10-01",
+          "file": "incoming_mock/rain_20241001.tif"
+        },
+        {
+          "date": "2024-10-11",
+          "file": "incoming_mock/rain_20241011.tif"
+        },
+        {
+          "date": "2024-10-21",
+          "file": "incoming_mock/rain_20241021.tif"
+        },
+        {
+          "date": "2024-11-01",
+          "file": "incoming_mock/rain_20241101.tif"
+        },
+        {
+          "date": "2024-12-01",
+          "file": "incoming_mock/rain_20241201.tif"
+        },
+        {
+          "date": "2025-01-01",
+          "file": "incoming_mock/rain_20250101.tif"
+        }
+      ],
+      "note": "Mock rainfall in mm per 10 days (shaped like CHIRPS dekads)"
+    }
+  ],
+  "credit": "MOCK DATA. Replace with the credit line required by the RADARSAT-2 EULA.",
+  "mock": true
+}

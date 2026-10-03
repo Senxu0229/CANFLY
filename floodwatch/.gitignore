@@ -1,0 +1,10 @@
+node_modules
+dist
+.DS_Store
+.env
+*.local
+# Raw and processed GeoTIFFs stay off GitHub (size, and the RADARSAT-2 EULA).
+incoming/
+incoming_mock/
+# Derived data: keep out of the public repo until the mentors confirm it can be shared.
+# public/data/

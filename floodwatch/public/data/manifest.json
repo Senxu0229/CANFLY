@@ -1,0 +1,247 @@
+{
+  "schema_version": "1.1",
+  "mock": true,
+  "generated_at": "2026-10-03T18:50:07+00:00",
+  "event": {
+    "name": "Alau Dam failure, Maiduguri",
+    "date": "2024-09-10"
+  },
+  "aoi": {
+    "name": "Maiduguri, Borno State, Nigeria",
+    "bounds": [
+      13.048371811539266,
+      11.698384020621827,
+      13.33134799183233,
+      11.93180093722294
+    ]
+  },
+  "grid": {
+    "width": 1400,
+    "height": 1172,
+    "pixel_m": 22.02,
+    "observed_share": 0.987
+  },
+  "passes": [
+    {
+      "date": "2024-10-09",
+      "scene_id": "water_20241009",
+      "days_since_event": 29
+    },
+    {
+      "date": "2024-10-15",
+      "scene_id": "water_20241015",
+      "days_since_event": 35
+    },
+    {
+      "date": "2024-10-22",
+      "scene_id": "water_20241022",
+      "days_since_event": 42
+    },
+    {
+      "date": "2024-10-26",
+      "scene_id": "water_20241026",
+      "days_since_event": 46
+    },
+    {
+      "date": "2024-11-19",
+      "scene_id": "water_20241119",
+      "days_since_event": 70
+    },
+    {
+      "date": "2024-11-26",
+      "scene_id": "water_20241126",
+      "days_since_event": 77
+    },
+    {
+      "date": "2024-12-02",
+      "scene_id": "water_20241202",
+      "days_since_event": 83
+    },
+    {
+      "date": "2025-01-06",
+      "scene_id": "water_20250106",
+      "days_since_event": 118
+    }
+  ],
+  "layers": {
+    "flood_duration": {
+      "type": "image",
+      "url": "data/flood_duration.png",
+      "bounds": [
+        13.048371811539266,
+        11.698384020621827,
+        13.33134799183233,
+        11.93180093722294
+      ],
+      "legend": {
+        "min_days": 29,
+        "max_days": 118,
+        "colors": [
+          "#d6eaf5",
+          "#96c4e6",
+          "#5392cd",
+          "#2660a8",
+          "#183678",
+          "#131c52"
+        ]
+      }
+    },
+    "water": {
+      "type": "image",
+      "url_template": "data/water_{date}.png",
+      "bounds": [
+        13.048371811539266,
+        11.698384020621827,
+        13.33134799183233,
+        11.93180093722294
+      ]
+    },
+    "radar": {
+      "type": "image",
+      "url_template": "data/radar_{date}.webp",
+      "bounds": [
+        13.048371811539266,
+        11.698384020621827,
+        13.33134799183233,
+        11.93180093722294
+      ],
+      "dates": [
+        "2024-10-09",
+        "2024-10-15",
+        "2024-10-22",
+        "2024-10-26",
+        "2024-11-19",
+        "2024-11-26",
+        "2024-12-02",
+        "2025-01-06"
+      ],
+      "legend": {
+        "min_db": -25.0,
+        "max_db": 0.0
+      }
+    }
+  },
+  "aux_layers": [
+    {
+      "id": "rainfall",
+      "name": "Rainfall",
+      "unit": "mm",
+      "bounds": [
+        13.048371811539266,
+        11.698384020621827,
+        13.33134799183233,
+        11.93180093722294
+      ],
+      "legend": {
+        "min": 0,
+        "max": 150,
+        "colors": [
+          "#f7fbff",
+          "#c6dbef",
+          "#6baed6",
+          "#2171b5",
+          "#08306b"
+        ]
+      },
+      "items": [
+        {
+          "date": "2024-09-01",
+          "url": "data/aux_rainfall_2024-09-01.png"
+        },
+        {
+          "date": "2024-09-11",
+          "url": "data/aux_rainfall_2024-09-11.png"
+        },
+        {
+          "date": "2024-09-21",
+          "url": "data/aux_rainfall_2024-09-21.png"
+        },
+        {
+          "date": "2024-10-01",
+          "url": "data/aux_rainfall_2024-10-01.png"
+        },
+        {
+          "date": "2024-10-11",
+          "url": "data/aux_rainfall_2024-10-11.png"
+        },
+        {
+          "date": "2024-10-21",
+          "url": "data/aux_rainfall_2024-10-21.png"
+        },
+        {
+          "date": "2024-11-01",
+          "url": "data/aux_rainfall_2024-11-01.png"
+        },
+        {
+          "date": "2024-12-01",
+          "url": "data/aux_rainfall_2024-12-01.png"
+        },
+        {
+          "date": "2025-01-01",
+          "url": "data/aux_rainfall_2025-01-01.png"
+        }
+      ],
+      "note": "Mock rainfall in mm per 10 days (shaped like CHIRPS dekads)"
+    }
+  ],
+  "kpis_by_pass": [
+    {
+      "date": "2024-10-09",
+      "flood_water_ha": 16675.8,
+      "cropland_flooded_ha": 6897.1,
+      "buildings_in_water": 1985,
+      "places_still_flooded": 21
+    },
+    {
+      "date": "2024-10-15",
+      "flood_water_ha": 14383.3,
+      "cropland_flooded_ha": 5740.4,
+      "buildings_in_water": 1880,
+      "places_still_flooded": 21
+    },
+    {
+      "date": "2024-10-22",
+      "flood_water_ha": 12000.1,
+      "cropland_flooded_ha": 4611.3,
+      "buildings_in_water": 1658,
+      "places_still_flooded": 19
+    },
+    {
+      "date": "2024-10-26",
+      "flood_water_ha": 10943.8,
+      "cropland_flooded_ha": 4147.6,
+      "buildings_in_water": 1497,
+      "places_still_flooded": 17
+    },
+    {
+      "date": "2024-11-19",
+      "flood_water_ha": 5579.1,
+      "cropland_flooded_ha": 2044.1,
+      "buildings_in_water": 1026,
+      "places_still_flooded": 17
+    },
+    {
+      "date": "2024-11-26",
+      "flood_water_ha": 4351.1,
+      "cropland_flooded_ha": 1546.4,
+      "buildings_in_water": 852,
+      "places_still_flooded": 15
+    },
+    {
+      "date": "2024-12-02",
+      "flood_water_ha": 3417.7,
+      "cropland_flooded_ha": 1146.9,
+      "buildings_in_water": 697,
+      "places_still_flooded": 11
+    },
+    {
+      "date": "2025-01-06",
+      "flood_water_ha": 643.7,
+      "cropland_flooded_ha": 150.4,
+      "buildings_in_water": 158,
+      "places_still_flooded": 3
+    }
+  ],
+  "credit": "MOCK DATA. Replace with the credit line required by the RADARSAT-2 EULA.",
+  "units_source": "polygons"
+}
