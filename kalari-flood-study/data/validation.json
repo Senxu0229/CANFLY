@@ -1,0 +1,402 @@
+{
+  "status": "passed",
+  "scope": "Internal arithmetic, geometry, source-derivative reconciliation and independent ellipsoidal area check. Not field validation or independent source mapping verification.",
+  "check_count": 85,
+  "passed_count": 85,
+  "area_tolerance_km2": 1e-05,
+  "maximum_source_area_difference_km2": 6.806053609587082e-09,
+  "maximum_projected_vs_geodesic_difference_pct": 0.009879661792589305,
+  "source_empty_geometry_periods_normalized_to_null": [
+    "VIIRS_20241027_20241031_MaximumFloodExtent_NGA"
+  ],
+  "checks": [
+    {
+      "check": "source_summary_has_twelve_unique_period_radius_rows",
+      "passed": true
+    },
+    {
+      "check": "source_geometry_valid:VIIRS_20240905_20240909_MaximumFloodExtent_NGA",
+      "passed": true
+    },
+    {
+      "check": "source_geometry_valid:VIIRS_20240914_20240918_MaximumFloodExtent_NGA",
+      "passed": true
+    },
+    {
+      "check": "source_geometry_valid:VIIRS_20240919_20240923_MaximumFloodExtent_NGA",
+      "passed": true
+    },
+    {
+      "check": "source_geometry_valid:VIIRS_20240926_20240930_MaximumFloodExtent_NGA",
+      "passed": true
+    },
+    {
+      "check": "source_geometry_valid:VIIRS_20241027_20241031_MaximumFloodExtent_NGA",
+      "passed": true
+    },
+    {
+      "check": "source_geometry_valid:VIIRS_20241109_20241113_MaximumFloodExtent_NGA",
+      "passed": true
+    },
+    {
+      "check": "six_unique_period_geometries",
+      "passed": true
+    },
+    {
+      "check": "circles_nested",
+      "passed": true
+    },
+    {
+      "check": "disjoint_zones_reconcile_to_outer_circle",
+      "passed": true
+    },
+    {
+      "check": "flood_within_outer_study_circle:VIIRS_20240905_20240909_MaximumFloodExtent_NGA",
+      "passed": true
+    },
+    {
+      "check": "area_reconciles_to_source_csv:VIIRS_20240905_20240909_MaximumFloodExtent_NGA:2km",
+      "passed": true,
+      "difference_km2": 0.0
+    },
+    {
+      "check": "ellipsoidal_area_agrees_with_projected:VIIRS_20240905_20240909_MaximumFloodExtent_NGA:2km",
+      "passed": true,
+      "projected_km2": 0.0,
+      "ellipsoidal_km2": 0.0,
+      "relative_difference_pct": 0.0
+    },
+    {
+      "check": "unvalidated_field_code:VIIRS_20240905_20240909_MaximumFloodExtent_NGA:2km",
+      "passed": true
+    },
+    {
+      "check": "share_reconciles_to_source_csv:VIIRS_20240905_20240909_MaximumFloodExtent_NGA:2km",
+      "passed": true
+    },
+    {
+      "check": "area_reconciles_to_source_csv:VIIRS_20240905_20240909_MaximumFloodExtent_NGA:5km",
+      "passed": true,
+      "difference_km2": 4.4364512064021255e-13
+    },
+    {
+      "check": "ellipsoidal_area_agrees_with_projected:VIIRS_20240905_20240909_MaximumFloodExtent_NGA:5km",
+      "passed": true,
+      "projected_km2": 2.8871131300231925,
+      "ellipsoidal_km2": 2.8868582876354645,
+      "relative_difference_pct": 0.0088268930329705
+    },
+    {
+      "check": "unvalidated_field_code:VIIRS_20240905_20240909_MaximumFloodExtent_NGA:5km",
+      "passed": true
+    },
+    {
+      "check": "share_reconciles_to_source_csv:VIIRS_20240905_20240909_MaximumFloodExtent_NGA:5km",
+      "passed": true
+    },
+    {
+      "check": "inner_area_not_greater_than_outer:VIIRS_20240905_20240909_MaximumFloodExtent_NGA",
+      "passed": true
+    },
+    {
+      "check": "distance_zone_areas_sum_to_five_km_total:VIIRS_20240905_20240909_MaximumFloodExtent_NGA",
+      "passed": true
+    },
+    {
+      "check": "flood_within_outer_study_circle:VIIRS_20240914_20240918_MaximumFloodExtent_NGA",
+      "passed": true
+    },
+    {
+      "check": "area_reconciles_to_source_csv:VIIRS_20240914_20240918_MaximumFloodExtent_NGA:2km",
+      "passed": true,
+      "difference_km2": 2.1094237467877974e-14
+    },
+    {
+      "check": "ellipsoidal_area_agrees_with_projected:VIIRS_20240914_20240918_MaximumFloodExtent_NGA:2km",
+      "passed": true,
+      "projected_km2": 0.1371253746064002,
+      "ellipsoidal_km2": 0.13711639380258323,
+      "relative_difference_pct": 0.0065493376720064745
+    },
+    {
+      "check": "unvalidated_field_code:VIIRS_20240914_20240918_MaximumFloodExtent_NGA:2km",
+      "passed": true
+    },
+    {
+      "check": "share_reconciles_to_source_csv:VIIRS_20240914_20240918_MaximumFloodExtent_NGA:2km",
+      "passed": true
+    },
+    {
+      "check": "area_reconciles_to_source_csv:VIIRS_20240914_20240918_MaximumFloodExtent_NGA:5km",
+      "passed": true,
+      "difference_km2": 2.3447910280083306e-13
+    },
+    {
+      "check": "ellipsoidal_area_agrees_with_projected:VIIRS_20240914_20240918_MaximumFloodExtent_NGA:5km",
+      "passed": true,
+      "projected_km2": 4.62270650236744,
+      "ellipsoidal_km2": 4.622290762515984,
+      "relative_difference_pct": 0.00899342952538773
+    },
+    {
+      "check": "unvalidated_field_code:VIIRS_20240914_20240918_MaximumFloodExtent_NGA:5km",
+      "passed": true
+    },
+    {
+      "check": "share_reconciles_to_source_csv:VIIRS_20240914_20240918_MaximumFloodExtent_NGA:5km",
+      "passed": true
+    },
+    {
+      "check": "inner_area_not_greater_than_outer:VIIRS_20240914_20240918_MaximumFloodExtent_NGA",
+      "passed": true
+    },
+    {
+      "check": "distance_zone_areas_sum_to_five_km_total:VIIRS_20240914_20240918_MaximumFloodExtent_NGA",
+      "passed": true
+    },
+    {
+      "check": "flood_within_outer_study_circle:VIIRS_20240919_20240923_MaximumFloodExtent_NGA",
+      "passed": true
+    },
+    {
+      "check": "area_reconciles_to_source_csv:VIIRS_20240919_20240923_MaximumFloodExtent_NGA:2km",
+      "passed": true,
+      "difference_km2": 6.806053609587082e-09
+    },
+    {
+      "check": "ellipsoidal_area_agrees_with_projected:VIIRS_20240919_20240923_MaximumFloodExtent_NGA:2km",
+      "passed": true,
+      "projected_km2": 0.13183908492704596,
+      "ellipsoidal_km2": 0.13183000154248464,
+      "relative_difference_pct": 0.006889750915934108
+    },
+    {
+      "check": "unvalidated_field_code:VIIRS_20240919_20240923_MaximumFloodExtent_NGA:2km",
+      "passed": true
+    },
+    {
+      "check": "share_reconciles_to_source_csv:VIIRS_20240919_20240923_MaximumFloodExtent_NGA:2km",
+      "passed": true
+    },
+    {
+      "check": "area_reconciles_to_source_csv:VIIRS_20240919_20240923_MaximumFloodExtent_NGA:5km",
+      "passed": true,
+      "difference_km2": 8.970602038971265e-14
+    },
+    {
+      "check": "ellipsoidal_area_agrees_with_projected:VIIRS_20240919_20240923_MaximumFloodExtent_NGA:5km",
+      "passed": true,
+      "projected_km2": 4.388117819130186,
+      "ellipsoidal_km2": 4.3877320725700315,
+      "relative_difference_pct": 0.008790706541036489
+    },
+    {
+      "check": "unvalidated_field_code:VIIRS_20240919_20240923_MaximumFloodExtent_NGA:5km",
+      "passed": true
+    },
+    {
+      "check": "share_reconciles_to_source_csv:VIIRS_20240919_20240923_MaximumFloodExtent_NGA:5km",
+      "passed": true
+    },
+    {
+      "check": "inner_area_not_greater_than_outer:VIIRS_20240919_20240923_MaximumFloodExtent_NGA",
+      "passed": true
+    },
+    {
+      "check": "distance_zone_areas_sum_to_five_km_total:VIIRS_20240919_20240923_MaximumFloodExtent_NGA",
+      "passed": true
+    },
+    {
+      "check": "flood_within_outer_study_circle:VIIRS_20240926_20240930_MaximumFloodExtent_NGA",
+      "passed": true
+    },
+    {
+      "check": "area_reconciles_to_source_csv:VIIRS_20240926_20240930_MaximumFloodExtent_NGA:2km",
+      "passed": true,
+      "difference_km2": 0.0
+    },
+    {
+      "check": "ellipsoidal_area_agrees_with_projected:VIIRS_20240926_20240930_MaximumFloodExtent_NGA:2km",
+      "passed": true,
+      "projected_km2": 0.0,
+      "ellipsoidal_km2": 0.0,
+      "relative_difference_pct": 0.0
+    },
+    {
+      "check": "unvalidated_field_code:VIIRS_20240926_20240930_MaximumFloodExtent_NGA:2km",
+      "passed": true
+    },
+    {
+      "check": "share_reconciles_to_source_csv:VIIRS_20240926_20240930_MaximumFloodExtent_NGA:2km",
+      "passed": true
+    },
+    {
+      "check": "area_reconciles_to_source_csv:VIIRS_20240926_20240930_MaximumFloodExtent_NGA:5km",
+      "passed": true,
+      "difference_km2": 1.0658141036401503e-13
+    },
+    {
+      "check": "ellipsoidal_area_agrees_with_projected:VIIRS_20240926_20240930_MaximumFloodExtent_NGA:5km",
+      "passed": true,
+      "projected_km2": 1.371284732097086,
+      "ellipsoidal_km2": 1.3711492538033414,
+      "relative_difference_pct": 0.009879661792589305
+    },
+    {
+      "check": "unvalidated_field_code:VIIRS_20240926_20240930_MaximumFloodExtent_NGA:5km",
+      "passed": true
+    },
+    {
+      "check": "share_reconciles_to_source_csv:VIIRS_20240926_20240930_MaximumFloodExtent_NGA:5km",
+      "passed": true
+    },
+    {
+      "check": "inner_area_not_greater_than_outer:VIIRS_20240926_20240930_MaximumFloodExtent_NGA",
+      "passed": true
+    },
+    {
+      "check": "distance_zone_areas_sum_to_five_km_total:VIIRS_20240926_20240930_MaximumFloodExtent_NGA",
+      "passed": true
+    },
+    {
+      "check": "flood_within_outer_study_circle:VIIRS_20241027_20241031_MaximumFloodExtent_NGA",
+      "passed": true
+    },
+    {
+      "check": "area_reconciles_to_source_csv:VIIRS_20241027_20241031_MaximumFloodExtent_NGA:2km",
+      "passed": true,
+      "difference_km2": 0.0
+    },
+    {
+      "check": "ellipsoidal_area_agrees_with_projected:VIIRS_20241027_20241031_MaximumFloodExtent_NGA:2km",
+      "passed": true,
+      "projected_km2": 0.0,
+      "ellipsoidal_km2": 0.0,
+      "relative_difference_pct": 0.0
+    },
+    {
+      "check": "unvalidated_field_code:VIIRS_20241027_20241031_MaximumFloodExtent_NGA:2km",
+      "passed": true
+    },
+    {
+      "check": "share_reconciles_to_source_csv:VIIRS_20241027_20241031_MaximumFloodExtent_NGA:2km",
+      "passed": true
+    },
+    {
+      "check": "area_reconciles_to_source_csv:VIIRS_20241027_20241031_MaximumFloodExtent_NGA:5km",
+      "passed": true,
+      "difference_km2": 0.0
+    },
+    {
+      "check": "ellipsoidal_area_agrees_with_projected:VIIRS_20241027_20241031_MaximumFloodExtent_NGA:5km",
+      "passed": true,
+      "projected_km2": 0.0,
+      "ellipsoidal_km2": 0.0,
+      "relative_difference_pct": 0.0
+    },
+    {
+      "check": "unvalidated_field_code:VIIRS_20241027_20241031_MaximumFloodExtent_NGA:5km",
+      "passed": true
+    },
+    {
+      "check": "share_reconciles_to_source_csv:VIIRS_20241027_20241031_MaximumFloodExtent_NGA:5km",
+      "passed": true
+    },
+    {
+      "check": "inner_area_not_greater_than_outer:VIIRS_20241027_20241031_MaximumFloodExtent_NGA",
+      "passed": true
+    },
+    {
+      "check": "distance_zone_areas_sum_to_five_km_total:VIIRS_20241027_20241031_MaximumFloodExtent_NGA",
+      "passed": true
+    },
+    {
+      "check": "flood_within_outer_study_circle:VIIRS_20241109_20241113_MaximumFloodExtent_NGA",
+      "passed": true
+    },
+    {
+      "check": "area_reconciles_to_source_csv:VIIRS_20241109_20241113_MaximumFloodExtent_NGA:2km",
+      "passed": true,
+      "difference_km2": 0.0
+    },
+    {
+      "check": "ellipsoidal_area_agrees_with_projected:VIIRS_20241109_20241113_MaximumFloodExtent_NGA:2km",
+      "passed": true,
+      "projected_km2": 0.0,
+      "ellipsoidal_km2": 0.0,
+      "relative_difference_pct": 0.0
+    },
+    {
+      "check": "unvalidated_field_code:VIIRS_20241109_20241113_MaximumFloodExtent_NGA:2km",
+      "passed": true
+    },
+    {
+      "check": "share_reconciles_to_source_csv:VIIRS_20241109_20241113_MaximumFloodExtent_NGA:2km",
+      "passed": true
+    },
+    {
+      "check": "area_reconciles_to_source_csv:VIIRS_20241109_20241113_MaximumFloodExtent_NGA:5km",
+      "passed": true,
+      "difference_km2": 2.2148949341271873e-14
+    },
+    {
+      "check": "ellipsoidal_area_agrees_with_projected:VIIRS_20241109_20241113_MaximumFloodExtent_NGA:5km",
+      "passed": true,
+      "projected_km2": 0.27426691385759194,
+      "ellipsoidal_km2": 0.2742442408385873,
+      "relative_difference_pct": 0.00826677147664714
+    },
+    {
+      "check": "unvalidated_field_code:VIIRS_20241109_20241113_MaximumFloodExtent_NGA:5km",
+      "passed": true
+    },
+    {
+      "check": "share_reconciles_to_source_csv:VIIRS_20241109_20241113_MaximumFloodExtent_NGA:5km",
+      "passed": true
+    },
+    {
+      "check": "inner_area_not_greater_than_outer:VIIRS_20241109_20241113_MaximumFloodExtent_NGA",
+      "passed": true
+    },
+    {
+      "check": "distance_zone_areas_sum_to_five_km_total:VIIRS_20241109_20241113_MaximumFloodExtent_NGA",
+      "passed": true
+    },
+    {
+      "check": "spatial_transition_balance:2024-09-09:2024-09-18",
+      "passed": true
+    },
+    {
+      "check": "spatial_transition_balance:2024-09-18:2024-09-23",
+      "passed": true
+    },
+    {
+      "check": "spatial_transition_balance:2024-09-23:2024-09-30",
+      "passed": true
+    },
+    {
+      "check": "spatial_transition_balance:2024-09-30:2024-10-31",
+      "passed": true
+    },
+    {
+      "check": "spatial_transition_balance:2024-10-31:2024-11-13",
+      "passed": true
+    },
+    {
+      "check": "frequency_areas_reconcile_to_unique_union",
+      "passed": true
+    },
+    {
+      "check": "frequency_weighted_areas_reconcile_to_sum_of_period_areas",
+      "passed": true
+    },
+    {
+      "check": "unique_union_at_least_each_period_area",
+      "passed": true
+    },
+    {
+      "check": "all_numeric_metrics_finite",
+      "passed": true
+    }
+  ]
+}

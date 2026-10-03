@@ -1,0 +1,9 @@
+# Analysis geometry and coordinate transformations.
+shapely>=2.1,<3
+pyproj>=3.7,<4
+# Optional raw geodatabase extraction and report figures.
+pyogrio>=0.11,<1
+matplotlib>=3.9,<4
+
+# Explicit dependency used by the plotting script.
+numpy>=1.26,<3

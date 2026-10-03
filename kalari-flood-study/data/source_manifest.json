@@ -1,0 +1,48 @@
+{
+  "lineage": "Supplied FL20240902NGA.gdb \u2192 prior local extraction \u2192 preserved source CSV and 5 km clipped GeoJSON \u2192 this analysis.",
+  "reproduction_scope": "All packaged derived data are reproducible from the bundled derivative inputs. This script does not reread or independently validate the original geodatabase.",
+  "source_files": [
+    {
+      "path": "data/source/README.md",
+      "bytes": 3072,
+      "sha256": "64e972b138a7b1df1febadc09be49108e77eb4d8774bda5f2806ea129035c127"
+    },
+    {
+      "path": "data/source/kalari_analysis.py",
+      "bytes": 2122,
+      "sha256": "319584f0687444e4df2ff3bf8928048330b4719d90da95d9b7f1f8c0c106a913"
+    },
+    {
+      "path": "data/source/kalari_flood_5km.geojson",
+      "bytes": 12474,
+      "sha256": "0c6ebd5c3379a35fc01372b4a61938a65e142d8102aec41fe5cb6c2655a94ecc"
+    },
+    {
+      "path": "data/source/kalari_flood_summary.csv",
+      "bytes": 1625,
+      "sha256": "d1c104a507813fb708fd75bfd09bcf75b7dec9adcee0c60c2237788251b64c4d"
+    },
+    {
+      "path": "data/source/layers.json",
+      "bytes": 4176,
+      "sha256": "d2565532596bfd75b10e921f97c47ddb55ad1baf74a30d0285012c6d7c05cf1a"
+    }
+  ],
+  "source_description": "VIIRS MaximumFloodExtent polygons from FL20240902NGA; six five-day periods in September\u2013November 2024.",
+  "location_source": "https://mapcarta.com/N5547360846",
+  "upstream_report": "https://unosat.org/static/unosat_filesystem/3967/UNOSAT_Preliminary_Assessment_Report_FL20240902NGA_Maiduguri_13Sep2024.pdf",
+  "method": {
+    "area_crs": "EPSG:32633",
+    "geojson_crs": "EPSG:4326 (RFC 7946)",
+    "buffer_quadrant_segments": 128,
+    "empty_geometry": "Converted empty coordinate arrays to null; zero summary rows retained.",
+    "spatial_transitions": "Intersection and directional differences of successive clipped period geometries.",
+    "observation_frequency": "Planar partition of all polygon boundaries; count of composites covering each piece.",
+    "no_count_to_duration_conversion": true
+  },
+  "software": {
+    "python": "3.12.14",
+    "shapely": "2.1.2",
+    "pyproj": "3.8.0"
+  }
+}

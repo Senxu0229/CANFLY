@@ -1,0 +1,7 @@
+{
+  "source": "FL20240902NGA_gdb.zip",
+  "checked_at": "2026-10-03",
+  "summary_csv_rows_identical": true,
+  "geojson_content_identical": true,
+  "method": "Reran scripts/extract_geodatabase.py against the original extracted GDB and compared all rows and GeoJSON content with preserved source derivatives."
+}

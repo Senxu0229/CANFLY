@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="849.6pt" height="489.6pt" viewBox="0 0 849.6 489.6" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <title>Mapped flood area by observation window in 2024, within 2 km and between 2–5 km of Kalari Abdu</title>
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title>Mapped flood area by observation window in 2024, within 2 km and between 2–5 km of Kalari Abdu</dc:title>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 489.6 
+L 849.6 489.6 
+L 849.6 0 
+L 0 0 
+z
+" style="fill: #fcfcf9"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 157.176 391.68 
+L 773.136 391.68 
+L 773.136 124.848 
+L 157.176 124.848 
+z
+" style="fill: #fcfcf9"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <path d="M 157.176 391.68 
+L 157.176 124.848 
+" clip-path="url(#p25f98f27cf)" style="fill: none; stroke: #dee5e6; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_2"/>
+     <g id="text_1">
+      <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #586b74" x="157.176" y="406.657539" transform="rotate(-0 157.176 406.657539)">0</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_3">
+      <path d="M 276.779883 391.68 
+L 276.779883 124.848 
+" clip-path="url(#p25f98f27cf)" style="fill: none; stroke: #dee5e6; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_4"/>
+     <g id="text_2">
+      <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #586b74" x="276.779883" y="406.657539" transform="rotate(-0 276.779883 406.657539)">1</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_5">
+      <path d="M 396.383767 391.68 
+L 396.383767 124.848 
+" clip-path="url(#p25f98f27cf)" style="fill: none; stroke: #dee5e6; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_6"/>
+     <g id="text_3">
+      <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #586b74" x="396.383767" y="406.657539" transform="rotate(-0 396.383767 406.657539)">2</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_7">
+      <path d="M 515.98765 391.68 
+L 515.98765 124.848 
+" clip-path="url(#p25f98f27cf)" style="fill: none; stroke: #dee5e6; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_8"/>
+     <g id="text_4">
+      <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #586b74" x="515.98765" y="406.657539" transform="rotate(-0 515.98765 406.657539)">3</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_9">
+      <path d="M 635.591534 391.68 
+L 635.591534 124.848 
+" clip-path="url(#p25f98f27cf)" style="fill: none; stroke: #dee5e6; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_10"/>
+     <g id="text_5">
+      <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #586b74" x="635.591534" y="406.657539" transform="rotate(-0 635.591534 406.657539)">4</text>
+     </g>
+    </g>
+    <g id="xtick_6">
+     <g id="line2d_11">
+      <path d="M 755.195417 391.68 
+L 755.195417 124.848 
+" clip-path="url(#p25f98f27cf)" style="fill: none; stroke: #dee5e6; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_12"/>
+     <g id="text_6">
+      <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #586b74" x="755.195417" y="406.657539" transform="rotate(-0 755.195417 406.657539)">5</text>
+     </g>
+    </g>
+    <g id="text_7">
+     <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #153547" x="465.156" y="428.918203" transform="rotate(-0 465.156 428.918203)">Mapped flood area (km²)</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_13"/>
+     <g id="text_8">
+      <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #153547" x="145.176" y="152.188944" transform="rotate(-0 145.176 152.188944)">5–9 Sep 2024</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_14"/>
+     <g id="text_9">
+      <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #153547" x="145.176" y="196.366427" transform="rotate(-0 145.176 196.366427)">14–18 Sep 2024</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_15"/>
+     <g id="text_10">
+      <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #153547" x="145.176" y="240.543911" transform="rotate(-0 145.176 240.543911)">19–23 Sep 2024</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_16"/>
+     <g id="text_11">
+      <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #153547" x="145.176" y="284.721394" transform="rotate(-0 145.176 284.721394)">26–30 Sep 2024</text>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_17"/>
+     <g id="text_12">
+      <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #153547" x="145.176" y="328.898878" transform="rotate(-0 145.176 328.898878)">27–31 Oct 2024</text>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="line2d_18"/>
+     <g id="text_13">
+      <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #153547" x="145.176" y="373.076361" transform="rotate(-0 145.176 373.076361)">9–13 Nov 2024</text>
+     </g>
+    </g>
+   </g>
+   <g id="patch_3">
+    <path d="M 157.176 391.68 
+L 157.176 124.848 
+" style="fill: none; stroke: #afbfc4; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 157.176 135.892371 
+L 157.176 135.892371 
+L 157.176 159.748212 
+L 157.176 159.748212 
+z
+" clip-path="url(#p25f98f27cf)" style="fill: #146c78"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 157.176 180.069854 
+L 173.576727 180.069854 
+L 173.576727 203.925695 
+L 157.176 203.925695 
+z
+" clip-path="url(#p25f98f27cf)" style="fill: #146c78"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 157.176 224.247338 
+L 172.944467 224.247338 
+L 172.944467 248.103179 
+L 157.176 248.103179 
+z
+" clip-path="url(#p25f98f27cf)" style="fill: #146c78"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 157.176 268.424821 
+L 157.176 268.424821 
+L 157.176 292.280662 
+L 157.176 292.280662 
+z
+" clip-path="url(#p25f98f27cf)" style="fill: #146c78"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 157.176 312.602305 
+L 157.176 312.602305 
+L 157.176 336.458146 
+L 157.176 336.458146 
+z
+" clip-path="url(#p25f98f27cf)" style="fill: #146c78"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 157.176 356.779788 
+L 157.176 356.779788 
+L 157.176 380.635629 
+L 157.176 380.635629 
+z
+" clip-path="url(#p25f98f27cf)" style="fill: #146c78"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 157.176 135.892371 
+L 502.485942 135.892371 
+L 502.485942 159.748212 
+L 157.176 159.748212 
+z
+" clip-path="url(#p25f98f27cf)" style="fill: #a9ced9"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 173.576727 180.069854 
+L 710.06965 180.069854 
+L 710.06965 203.925695 
+L 173.576727 203.925695 
+z
+" clip-path="url(#p25f98f27cf)" style="fill: #a9ced9"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 172.944467 224.247338 
+L 682.011932 224.247338 
+L 682.011932 248.103179 
+L 172.944467 248.103179 
+z
+" clip-path="url(#p25f98f27cf)" style="fill: #a9ced9"/>
+   </g>
+   <g id="patch_13">
+    <path d="M 157.176 268.424821 
+L 321.186979 268.424821 
+L 321.186979 292.280662 
+L 157.176 292.280662 
+z
+" clip-path="url(#p25f98f27cf)" style="fill: #a9ced9"/>
+   </g>
+   <g id="patch_14">
+    <path d="M 157.176 312.602305 
+L 157.176 312.602305 
+L 157.176 336.458146 
+L 157.176 336.458146 
+z
+" clip-path="url(#p25f98f27cf)" style="fill: #a9ced9"/>
+   </g>
+   <g id="patch_15">
+    <path d="M 157.176 356.779788 
+L 189.979388 356.779788 
+L 189.979388 380.635629 
+L 157.176 380.635629 
+z
+" clip-path="url(#p25f98f27cf)" style="fill: #a9ced9"/>
+   </g>
+   <g id="text_14">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #153547" x="511.456234" y="150.937479" transform="rotate(-0 511.456234 150.937479)">2.89</text>
+   </g>
+   <g id="text_15">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #153547" x="719.039941" y="195.114962" transform="rotate(-0 719.039941 195.114962)">4.62</text>
+   </g>
+   <g id="text_16">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #153547" x="690.982224" y="239.292446" transform="rotate(-0 690.982224 239.292446)">4.39</text>
+   </g>
+   <g id="text_17">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #153547" x="330.157271" y="283.469929" transform="rotate(-0 330.157271 283.469929)">1.37</text>
+   </g>
+   <g id="text_18">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #586b74" x="170.332427" y="327.336116" transform="rotate(-0 170.332427 327.336116)">0.00  ·  No mapped detection</text>
+   </g>
+   <g id="text_19">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #153547" x="198.949679" y="371.824896" transform="rotate(-0 198.949679 371.824896)">0.27</text>
+   </g>
+   <g id="line2d_19">
+    <defs>
+     <path id="m88e080148e" d="M 0 2.5 
+C 0.663008 2.5 1.29895 2.236584 1.767767 1.767767 
+C 2.236584 1.29895 2.5 0.663008 2.5 0 
+C 2.5 -0.663008 2.236584 -1.29895 1.767767 -1.767767 
+C 1.29895 -2.236584 0.663008 -2.5 0 -2.5 
+C -0.663008 -2.5 -1.29895 -2.236584 -1.767767 -1.767767 
+C -2.236584 -1.29895 -2.5 -0.663008 -2.5 0 
+C -2.5 0.663008 -2.236584 1.29895 -1.767767 1.767767 
+C -1.29895 2.236584 -0.663008 2.5 0 2.5 
+z
+" style="stroke: #586b74"/>
+    </defs>
+    <g>
+     <use xlink:href="#m88e080148e" x="157.176" y="324.530225" style="fill: #586b74; stroke: #586b74"/>
+    </g>
+   </g>
+  </g>
+  <g id="text_20">
+   <text style="font-weight: 700; font-size: 21px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #153547" x="46.728" y="34.272" transform="rotate(-0 46.728 34.272)">Mapped flood extent near Kalari Abdu</text>
+  </g>
+  <g id="text_21">
+   <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #586b74" x="46.728" y="56.304" transform="rotate(-0 46.728 56.304)">Six observation windows in 2024 · land within 5 km of the approximate village point</text>
+  </g>
+  <g id="text_22">
+   <text style="font-size: 9.3px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #586b74" x="46.728" y="447.0048" transform="rotate(-0 46.728 447.0048)">Source: UNOSAT VIIRS maximum-flood-extent layers; local clipping in EPSG:32633.</text>
+  </g>
+  <g id="text_23">
+   <text style="font-size: 9.3px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #586b74" x="46.728" y="461.6928" transform="rotate(-0 46.728 461.6928)">Bands are disjoint and sum to the 5 km total. Periods are separate composites; not yet field validated.</text>
+  </g>
+  <g id="text_24">
+   <text style="font-size: 9.3px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #586b74" x="46.728" y="476.3808" transform="rotate(-0 46.728 476.3808)">No mapped detection does not establish dry conditions or complete detection.</text>
+  </g>
+  <g id="legend_1">
+   <g id="patch_16">
+    <path d="M 49.1616 93.908 
+L 62.6016 93.908 
+L 62.6016 83.52 
+L 49.1616 83.52 
+z
+" style="fill: #146c78"/>
+   </g>
+   <g id="text_25">
+    <text style="font-size: 11.2px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #153547" x="71.5616" y="92.536" transform="rotate(-0 71.5616 92.536)">Within 2 km</text>
+   </g>
+   <g id="patch_17">
+    <path d="M 165.7186 93.908 
+L 179.1586 93.908 
+L 179.1586 83.52 
+L 165.7186 83.52 
+z
+" style="fill: #a9ced9"/>
+   </g>
+   <g id="text_26">
+    <text style="font-size: 11.2px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #153547" x="188.1186" y="92.536" transform="rotate(-0 188.1186 92.536)">Between 2 and 5 km</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p25f98f27cf">
+   <rect x="157.176" y="124.848" width="615.96" height="266.832"/>
+  </clipPath>
+ </defs>
+</svg>

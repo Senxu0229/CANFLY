@@ -1,0 +1,49 @@
+{
+  "study": {
+    "name": "Kalari Abdu flood footprint study",
+    "location_lon": 13.28467,
+    "location_lat": 11.73678,
+    "location_type": "approximate village point; not a settlement boundary",
+    "area_crs": "EPSG:32633",
+    "analysis_radius_km": 5,
+    "study_area_km2": 78.5378450286073,
+    "period_count": 6,
+    "first_period_start": "2024-09-05",
+    "last_period_end": "2024-11-13",
+    "composite_days_each": 5
+  },
+  "peak": {
+    "period_start": "2024-09-14",
+    "period_end": "2024-09-18",
+    "period_label": "14\u201318 Sep 2024",
+    "mapped_flood_km2": 4.62270650236744,
+    "mapped_flood_ha": 462.270650236744,
+    "share_of_study_area_pct": 5.885960457259333,
+    "within_two_km_km2": 0.1371253746064002,
+    "between_two_and_five_km_km2": 4.48558112776104,
+    "between_two_and_five_km_share_pct": 97.0336560511429
+  },
+  "change": {
+    "early_september_to_peak_increase_pct": 60.1151840672868,
+    "peak_to_late_september_decline_pct": 70.33589021074978,
+    "peak_to_late_september_decline_km2": 3.251421770270354,
+    "late_september_mapped_km2": 1.371284732097086,
+    "november_mapped_km2": 0.27426691385759194
+  },
+  "spatial": {
+    "unique_mapped_footprint_km2": 6.679651556389413,
+    "unique_mapped_footprint_ha": 667.9651556389414,
+    "unique_footprint_share_of_study_area_pct": 8.505009978254892,
+    "mapped_in_at_least_two_periods_km2": 3.9841216232346675,
+    "mapped_in_at_least_two_periods_share_of_union_pct": 59.64565051935471,
+    "maximum_period_count": 4
+  },
+  "interpretation": [
+    "Areas describe mapped flood extent inside a 5 km circular study area, not the village administrative area.",
+    "Peak means the largest extent among six supplied five-day composites; the exact flood peak date is unknown.",
+    "Spatial overlap across composites is repeat detection, not continuous inundation or measured duration.",
+    "Newly mapped and no longer mapped compare classifications, not proven onset or drainage times.",
+    "Zero mapped area does not demonstrate dry or safe conditions; later-period spatial coverage is not independently verified.",
+    "All source flood records are marked not yet field validated. No local people, buildings or loss figures can be inferred."
+  ]
+}
