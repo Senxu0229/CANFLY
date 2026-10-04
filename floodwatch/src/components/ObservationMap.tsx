@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import type { KeyboardEvent, PointerEvent as ReactPointerEvent } from 'react';
 import maplibregl from 'maplibre-gl';
+import waterClasses from '../../shared/water_classes.json';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { assetUrl, formatDate, type ComparisonData, type Observation } from '../lib/observations';
+import { analysisForPair, assetUrl, formatDate, type ComparisonData, type Observation } from '../lib/observations';
 
-export type ViewMode = 'before' | 'compare' | 'after';
+export type ViewMode = 'before' | 'compare' | 'after' | 'change';
 export type Basemap = 'plain' | 'streets' | 'imagery';
 interface Props {
   data: ComparisonData;
@@ -27,17 +28,31 @@ const baseStyle = (): maplibregl.StyleSpecification => ({
     { id: 'imagery', type: 'raster', source: 'imagery', layout: { visibility: 'none' } },
   ],
 });
-function updateDisplay(map: maplibregl.Map, basemap: Basemap, opacity: number, outline: boolean) {
+function updateDisplay(map: maplibregl.Map, basemap: Basemap, opacity: number, outline: boolean, mode: ViewMode, observationId: string) {
   for (const id of ['streets', 'imagery']) map.setLayoutProperty(id, 'visibility', id === basemap ? 'visible' : 'none');
-  if (map.getLayer('radar')) map.setPaintProperty('radar', 'raster-opacity', opacity);
+  for (const layer of map.getStyle().layers) {
+    if (!layer.id.startsWith('radar-')) continue;
+    map.setLayoutProperty(layer.id, 'visibility', layer.id === 'radar-' + observationId ? 'visible' : 'none');
+    map.setPaintProperty(layer.id, 'raster-opacity', opacity);
+  }
+  if (map.getLayer('water-change')) map.setLayoutProperty('water-change', 'visibility', mode === 'change' ? 'visible' : 'none');
   for (const id of ['boundary-halo', 'boundary-line']) {
     if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', outline ? 'visible' : 'none');
   }
 }
 function addObservation(map: maplibregl.Map, data: ComparisonData, observation: Observation) {
   const [west, south, east, north] = data.manifest.aoi.bounds;
-  map.addSource('radar', { type: 'image', url: assetUrl(observation.image_url), coordinates: [[west, north], [east, north], [east, south], [west, south]] });
-  map.addLayer({ id: 'radar', type: 'raster', source: 'radar', paint: { 'raster-fade-duration': 0, 'raster-resampling': 'nearest' } });
+  // Four local images are loaded once; selecting layers keeps cameras and
+  // avoids stale async image replacements during rapid date changes.
+  for (const item of data.manifest.observations) {
+    const id = 'radar-' + item.id;
+    map.addSource(id, { type: 'image', url: assetUrl(item.image_url), coordinates: [[west, north], [east, north], [east, south], [west, south]] });
+    map.addLayer({ id, type: 'raster', source: id, layout: { visibility: item.id === observation.id ? 'visible' : 'none' }, paint: { 'raster-fade-duration': 0, 'raster-resampling': 'nearest' } });
+  }
+  if (data.analysis) {
+    map.addSource('water-change', { type: 'image', url: assetUrl(data.analysis.overlay_url), coordinates: [[west,north],[east,north],[east,south],[west,south]] });
+    map.addLayer({ id: 'water-change', type: 'raster', source: 'water-change', layout: { visibility: 'none' }, paint: { 'raster-fade-duration': 0, 'raster-resampling': 'nearest' } });
+  }
   map.addSource('boundary', { type: 'geojson', data: data.boundary });
   map.addLayer({ id: 'boundary-halo', type: 'line', source: 'boundary', paint: { 'line-color': '#fff', 'line-width': 3.5, 'line-opacity': 0.8 } });
   map.addLayer({ id: 'boundary-line', type: 'line', source: 'boundary', paint: { 'line-color': '#087c75', 'line-width': 1.5, 'line-dasharray': [4, 3] } });
@@ -49,13 +64,17 @@ function addObservation(map: maplibregl.Map, data: ComparisonData, observation: 
 }
 
 export function ObservationMap({ data, baseline, post, mode, basemap, opacity, outline }: Props) {
+  const selected = useRef({ before: baseline, after: post });
+  selected.current = { before: baseline, after: post };
+  const analysis = analysisForPair(data, baseline.id, post.id);
+  const displayMode = mode === 'change' && !analysis ? 'compare' : mode;
   const wrapper = useRef<HTMLDivElement>(null);
   const afterContainer = useRef<HTMLDivElement>(null);
   const beforeContainer = useRef<HTMLDivElement>(null);
   const maps = useRef<maplibregl.Map[]>([]);
-  const options = useRef({ basemap, opacity, outline });
-  options.current = { basemap, opacity, outline };
-  const [loaded, setLoaded] = useState({ before: false, after: false });
+  const options = useRef({ basemap, opacity, outline, mode: displayMode });
+  options.current = { basemap, opacity, outline, mode: displayMode };
+  const [loaded, setLoaded] = useState({ before: '', after: '' });
   const [mapError, setMapError] = useState<string | null>(null);
   const [backgroundError, setBackgroundError] = useState(false);
   const [split, setSplit] = useState(50);
@@ -67,11 +86,11 @@ export function ObservationMap({ data, baseline, post, mode, basemap, opacity, o
     const created: maplibregl.Map[] = [];
     const markers: maplibregl.Marker[] = [];
     const [west, south, east, north] = data.manifest.aoi.bounds;
-    setLoaded({ before: false, after: false });
+    setLoaded({ before: '', after: '' });
     setMapError(null);
     const observer = new ResizeObserver(() => created.forEach((map) => map.resize()));
     try {
-      const makeMap = (container: HTMLElement, observation: Observation, side: 'before' | 'after') => {
+      const makeMap = (container: HTMLElement, side: 'before' | 'after') => {
         const map = new maplibregl.Map({
           container, style: baseStyle(),
           bounds: [[west, south], [east, north]], fitBoundsOptions: { padding: 48 },
@@ -96,15 +115,16 @@ export function ObservationMap({ data, baseline, post, mode, basemap, opacity, o
         map.on('load', () => {
           if (disposed) return;
           try {
-            markers.push(addObservation(map, data, observation));
-            updateDisplay(map, options.current.basemap, options.current.opacity, options.current.outline);
+            markers.push(addObservation(map, data, selected.current[side]));
+            updateDisplay(map, options.current.basemap, options.current.opacity, options.current.outline, options.current.mode, selected.current[side].id);
           } catch (error) {
             setMapError('The radar map could not be displayed. ' + (error instanceof Error ? error.message : String(error)));
           }
         });
         map.on('idle', () => {
-          if (!disposed && map.getSource('radar') && map.isSourceLoaded('radar')) {
-            setLoaded((current) => current[side] ? current : { ...current, [side]: true });
+          const id = selected.current[side].id;
+          if (!disposed && map.getSource('radar-' + id) && map.isSourceLoaded('radar-' + id) && (!data.analysis || (map.getSource('water-change') && map.isSourceLoaded('water-change')))) {
+            setLoaded((current) => current[side] === id ? current : { ...current, [side]: id });
           }
         });
         map.getCanvas().addEventListener('webglcontextlost', (event) => {
@@ -113,8 +133,8 @@ export function ObservationMap({ data, baseline, post, mode, basemap, opacity, o
         });
         return map;
       };
-      const after = makeMap(afterContainer.current, post, 'after');
-      const before = makeMap(beforeContainer.current, baseline, 'before');
+      const after = makeMap(afterContainer.current, 'after');
+      const before = makeMap(beforeContainer.current, 'before');
       maps.current = [after, before];
       after.addControl(new maplibregl.ScaleControl({ unit: 'metric', maxWidth: 100 }), 'bottom-left');
       const sync = () => {
@@ -133,15 +153,16 @@ export function ObservationMap({ data, baseline, post, mode, basemap, opacity, o
       created.forEach((map) => map.remove());
       maps.current = [];
     };
-  }, [data, baseline, post]);
+  }, [data]);
 
   useEffect(() => { setBackgroundError(false); }, [basemap]);
 
   useEffect(() => {
-    for (const map of maps.current) {
-      if (map.getLayer('radar')) updateDisplay(map, basemap, opacity, outline);
+    for (const [index, map] of maps.current.entries()) {
+      const id = index === 0 ? post.id : baseline.id;
+      if (map.getLayer('radar-' + id)) updateDisplay(map, basemap, opacity, outline, displayMode, id);
     }
-  }, [basemap, opacity, outline]);
+  }, [basemap, opacity, outline, displayMode, baseline, post]);
 
   const updateSplit = (event: ReactPointerEvent<HTMLElement>) => {
     if (!wrapper.current) return;
@@ -157,18 +178,28 @@ export function ObservationMap({ data, baseline, post, mode, basemap, opacity, o
       setSplit((value) => event.key === 'Home' ? 0 : event.key === 'End' ? 100 : Math.min(100, Math.max(0, value + actions[event.key])));
     }
   };
-  const visibleSplit = mode === 'before' ? 100 : mode === 'after' ? 0 : split;
-  const ready = loaded.before && loaded.after;
-  return <div className="comparison-map" ref={wrapper} data-testid="comparison-map" data-before-loaded={loaded.before} data-after-loaded={loaded.after} data-mode={mode} aria-label="Radar observations of Kalari Abdu">
-    <div className="map map-after" ref={afterContainer} />
-    <div className="map map-before" ref={beforeContainer} style={{ clipPath: 'inset(0 ' + (100 - visibleSplit) + '% 0 0)' }} aria-hidden="true" />
+  const visibleSplit = mode === 'before' ? 100 : (mode === 'after' || mode === 'change') ? 0 : split;
+  const leftLoaded = loaded.before === baseline.id;
+  const rightLoaded = loaded.after === post.id;
+  const ready = leftLoaded && rightLoaded;
+  return <div className="comparison-map" ref={wrapper} data-testid="comparison-map" data-before-loaded={leftLoaded} data-after-loaded={rightLoaded} data-left-id={baseline.id} data-right-id={post.id} data-mode={mode} aria-label="Radar observations of Kalari Abdu">
+    <div className="map map-after" ref={afterContainer} style={{ visibility: ready ? 'visible' : 'hidden' }} />
+    <div className="map map-before" ref={beforeContainer} style={{ visibility: ready ? 'visible' : 'hidden', clipPath: 'inset(0 ' + (100 - visibleSplit) + '% 0 0)' }} aria-hidden="true" />
     {!ready && !mapError && <div className="map-loading" role="status">Drawing radar observations…</div>}
-    {mapError && <div className="map-failure" role="alert"><strong>Map unavailable</strong><p>{mapError}</p><a href={assetUrl(baseline.image_url)} target="_blank" rel="noreferrer">Open before image</a><a href={assetUrl(post.image_url)} target="_blank" rel="noreferrer">Open after image</a></div>}
+    {mapError && <div className="map-failure" role="alert"><strong>Map unavailable</strong><p>{mapError}</p><a href={assetUrl(baseline.image_url)} target="_blank" rel="noreferrer">Open left image</a><a href={assetUrl(post.image_url)} target="_blank" rel="noreferrer">Open right image</a></div>}
     {backgroundError && !mapError && <p className="basemap-error" role="status">Background tiles unavailable. The local radar images still work; select Plain for an offline background.</p>}
     <div className="map-date-labels" aria-live="polite">
-      {mode !== 'after' && <div className="map-date before"><span>Before</span><strong>{formatDate(baseline.date)}</strong></div>}
-      {mode !== 'before' && <div className="map-date after"><span>After</span><strong>{formatDate(post.date)}</strong></div>}
+      {mode !== 'after' && mode !== 'change' && <div className="map-date before"><span>Left image</span><strong>{formatDate(baseline.date)}</strong></div>}
+      {mode !== 'before' && <div className="map-date after"><span>{mode === 'change' ? 'Changes between dates · unverified' : 'Right image'}</span><strong>{formatDate(post.date)}</strong></div>}
     </div>
+    {displayMode === 'change' && <div className="change-legend" aria-label="Candidate change legend">
+      <strong>What the colours mean</strong>
+      {['new', 'persistent', 'brighter'].map((key) => {
+        const entry = waterClasses.classes.find((item) => item.key === key)!;
+        return <span key={key}><i className="swatch" style={{ background: `rgb(${entry.rgba.slice(0, 3).join(',')})` }} />{entry.label}</span>;
+      })}
+      <small>Orange: brighter in September; water loss is unconfirmed.<br />All colours need checking. Uncoloured areas may also contain water.</small>
+    </div>}
     <div className="map-navigation" aria-label="Map controls">
       <span className="north-indicator" title="North is up" aria-label="North is up">↑<small>N</small></span>
       <button aria-label="Zoom in" onClick={() => maps.current[0]?.zoomIn({ duration: 0 })}>+</button>
@@ -180,9 +211,9 @@ export function ObservationMap({ data, baseline, post, mode, basemap, opacity, o
     </div>
     {mode === 'compare' && <div className="swipe-divider" style={{ left: split + '%' }}>
       <div
-        role="slider" tabIndex={0} aria-label="Before and after divider" aria-orientation="horizontal"
+        role="slider" tabIndex={0} aria-label="Left and right divider" aria-orientation="horizontal"
         aria-valuemin={0} aria-valuemax={100} aria-valuenow={split}
-        aria-valuetext={split + '% before image, ' + (100 - split) + '% after image'}
+        aria-valuetext={split + '% left image, ' + (100 - split) + '% right image'}
         aria-describedby="divider-help" className="swipe-handle"
         onKeyDown={keyboardSplit}
         onPointerDown={(event) => { event.preventDefault(); event.stopPropagation(); pointer.current = event.pointerId; event.currentTarget.focus(); event.currentTarget.setPointerCapture(event.pointerId); updateSplit(event); }}
@@ -192,7 +223,7 @@ export function ObservationMap({ data, baseline, post, mode, basemap, opacity, o
         onLostPointerCapture={() => { pointer.current = null; }}
       ><span aria-hidden="true">‹ ›</span></div>
     </div>}
-    <span id="divider-help" className="sr-only">Drag the divider or use the arrow keys. Home shows only after, End shows only before. Shift and arrow moves ten percent.</span>
+    <span id="divider-help" className="sr-only">Drag the divider or use the arrow keys. Home shows only right, End shows only left. Shift and arrow moves ten percent.</span>
     <span className="map-boundary-legend"><span aria-hidden="true" />{data.manifest.aoi.radius_m / 1000} km study radius</span>
   </div>;
 }

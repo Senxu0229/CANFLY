@@ -1,58 +1,78 @@
-# Active contract: real observation previews (schema 2.0)
+# Active contract: calibrated observations and exploratory changes
 
-The active frontend reads `public/observations/manifest.json`, the referenced
-PNG images, and `aoi.geojson`. It never falls back to legacy mock data.
+The frontend reads `public/observations/manifest.json` (schema `2.0`, mode
+`imagery-comparison`), at least two dated PNGs, and an EPSG:4326 AOI polygon. It never
+falls back to legacy mock data. IDs and dates must be unique. Current records
+identify baseline 2024-08-28 and post-event 2024-09-21, 2024-10-15, 2024-11-08,
+all HH/XF0W2/descending. The 2024-09-10 event is a regional
+timeline reference, not a per-pixel flood-onset date.
 
-Required manifest fields:
+The AOI center is `[13.2846742, 11.7367804]`, radius 6000 m. Bounds are geographic
+`[west,south,east,north]` coordinates of the common north-up EPSG:3857 display
+grid. MapLibre corners are NW, NE, SE, SW. Both previews and the change overlay
+must share its dimensions and bounds. Alpha encodes coverage; PNG values are
+for display only. Optional online basemaps are not contemporaneous references.
 
-- `schema_version: "2.0"`, `mode: "imagery-comparison"`.
-- `event`: event name and reference date (`2024-09-10`). This is a timeline
-  reference, not an inferred flood-onset date for every pixel.
-- `aoi`: `name`, `center` in `[longitude, latitude]` order, `radius_m`, and
-  `bounds` in `[west, south, east, north]` order.
-- `observations`: baseline and post-event records with `id`, acquisition
-  `date`, `role`, `label`, `image_url`, source-product identifier, beam mode,
-  polarization, orbit direction, and acquisition timestamp.
-- `aoi_url`: GeoJSON Polygon in EPSG:4326 for the 6 km radius study boundary.
-- `display`: common output grid and stretch. Status is `terrain-corrected-preview`
-  for the current DEM-based export, or `uncalibrated-preview` for legacy GCP
-  placement. Both remain radiometrically uncalibrated; the exporter records
-  `radiometrically_calibrated: false` and `geometry_method`.
-- `limitations` and `credit`: provenance/context, not unsupported accuracy claims.
+`display.status` supports:
 
-## Coordinate and display requirements
+- `uncalibrated-preview`: legacy zero-height GCP preview.
+- `terrain-corrected-preview`: geometry corrected, still uncalibrated.
+- `calibrated-analysis-preview`: calibrated sigma0 display, common −25 to −5 dB
+  stretch; requires an `analysis_url`.
 
-1. Both PNGs are warped to exactly the same north-up **EPSG:3857** raster grid.
-2. Their common map bounds are the geographic coordinates of that grid's
-   corners. MapLibre image coordinates are NW, NE, SE, SW.
-3. Alpha represents valid display coverage. Transparent/out-of-AOI pixels are
-   not dry land and must never enter flood statistics.
-4. Both previews use the same original log-raw-power display stretch. These
-   are display bytes, not calibrated sigma0 values in dB.
-5. Web Mercator map-unit spacing is not the same as ground spacing or sensor
-   resolving power. Preview resampling does not add spatial detail.
-6. Current placement uses SNAP Range-Doppler terrain correction of original
-   intensity with SRTM elevations and EGM96-to-ellipsoid conversion. The AOI
-   remains fixed on the ground. Legacy exports use zero-height product GCPs.
-   Neither status promises surveyed absolute accuracy or independently verified
-   fine registration between dates; changing shoreline positions are not control points.
-7. The basemap is contextual. Its imagery date is unrelated to the selected
-   RADARSAT-2 date. The circle is an AOI, not a village boundary or flood extent.
+`analysis_url` references a content-versioned report with schema `1.0` and
+status `exploratory-unvalidated`. `dates` contains exactly two distinct observation
+IDs in chronological order, a subset of the manifest observations. Its ordered
+pair must exactly match the selected left/right IDs before any analysis is
+shown. Reversing the pair does not reinterpret its classes or statistics.
+Required fields also include
+`display_bounds`, `overlay_url`, `areas`, `method`, `sensitivity`,
+`no_data_area_km2`, and `downloads` (preview, before, after, classes, report).
+The loader verifies finite areas, matching dates/bounds, area identities,
+coverage, sensitivity ordering and both radar/overlay image sizes. Missing or
+inconsistent analysis produces a visible error, never fallback statistics. A valid
+report for a different selected pair stays hidden; the UI shows image comparison
+only and disables Changes. All dates use the same display scale and grid.
+Switching dates changes layer visibility on existing maps, preserving the camera.
+The date selector disallows selecting the same observation on both sides.
 
-`provenance.json` records export validation, source hashes, and the optional
-`terrain_processing` record (DEM, software, graph method, source checks, and
-corrected output hashes). Current image URLs end in `_tc.png`, avoiding stale
-uncorrected image caches. Keep the full
-original product directory for future SAR processing; the cropped complex TIFF
-is not a complete SNAP product.
+Areas are approximate square kilometres from 100 m² UTM 33N analysis pixels:
 
-## What this stage deliberately does not infer
+- before = persistent + lost
+- after = persistent + new
+- net = new − lost = after − before
+- missing and outside-AOI pixels are excluded, never treated as dry
 
-There is no water mask, change classification, flood-area estimate, building
-impact count, continuously observed flood duration, or drying forecast in this
-contract. The August baseline is a selected observation, not proof that all
-pixels were flood-free. Introduce such products only with a separate, verified
-analysis contract and explicit missing-data handling.
+The analysis GeoTIFFs use a shared 10 m grid; three bands hold 10 m linear
+sigma0, 30 m box-mean linear sigma0, and its dB conversion. Nodata is −9999.
+The Byte change raster uses 0=nodata, 1=neither-date candidate, 2=both-date
+candidate, 3=new candidate, 4=lost candidate. A common pooled Otsu threshold (restored to −12.40234375 dB for this pair)
+and removal of water components smaller than 9 pixels define this exploratory
+classification. `method.threshold_method` and `method.threshold_db` identify
+the actual rule. `method.threshold_selection` is null for Otsu; the optional valley method records
+histogram parameters and bin-width stability; optional `otsu_reference` contains the previous Otsu rule's
+cutoff and areas recomputed on the same inputs. The UI reads these values from
+the report. No class means verified water or verified dry land.
+
+Overlay colours: blue=both dates, cyan=new, orange=lost; 0 and 1 are transparent.
+These colours describe radar threshold classes only; orange does not establish
+water recession. Existing area keys containing `water` are compatibility names,
+not semantic ground truth. The Changes view shows this overlay on post-event radar, without a divider.
+Gray previews are always separate from the analytical classifications.
+
+Sensitivity varies the thresholds independently by ±1 dB on each date. It is
+not a statistical confidence interval. Local reports retain calibration input
+hashes, SNAP graphs/logs, analysis raster hashes, largest-patch centroids,
+parameters and limitations. Public reports remove private absolute input paths.
+The old `provenance.json` belongs to the legacy geometry-only export; the active
+analysis report and its local `calibration_info.json` supply current provenance.
+
+The original full complex product remains necessary for calibration/geometry.
+No surveyed absolute geolocation or fine registration accuracy is promised.
+Smooth soil and shadows can appear water-like, while vegetated/urban flooding
+can be missed. No independent same-date ground truth is supplied. The baseline
+may already contain water and neither date necessarily represents peak flooding.
+There are no building-impact, continuous-duration or drying-forecast claims.
 
 ---
 

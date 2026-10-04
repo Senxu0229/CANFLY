@@ -1,0 +1,13 @@
+{
+  "llm_base_url": "http://127.0.0.1:8002/v1",
+  "llm_model": "qwen35",
+  "llm_api_key": "",
+  "embedding_provider": "tfidf",
+  "embedding_model": "char-ngram-tfidf-v1",
+  "embedding_base_url": "",
+  "embedding_api_key": "",
+  "knowledge_dir": "knowledge",
+  "index_path": ".rag/index.sqlite3",
+  "top_k": 4,
+  "timeout_seconds": 90
+}

@@ -16,3 +16,7 @@ incoming_mock/
 
 # Python processing caches
 __pycache__/
+
+# Local assistant index, source snapshots and private model settings
+/.rag/
+/chat.config.local.json

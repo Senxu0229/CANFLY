@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "classes": [
+    {"key":"nodata","code":0,"rgba":[0,0,0,0],"label":"Outside valid coverage","meaning":"Outside the study area or missing data; never count as dry land."},
+    {"key":"neither","code":1,"rgba":[0,0,0,0],"label":"Neither date below the water-candidate rule","meaning":"Not in either candidate mask. This does not prove dry land; vegetated or urban flooding can be missed."},
+    {"key":"persistent","code":2,"rgba":[23,106,175,175],"label":"Possible water on both dates","colour":"dark blue / 深蓝色","meaning":"Both dates meet the low-backscatter candidate rule after filtering. 两期疑似水体；并非已经确认的水体。"},
+    {"key":"new","code":3,"rgba":[0,220,235,235],"label":"Possible new water","colour":"light blue / 浅蓝色","meaning":"Only the later date meets the candidate rule after filtering. 疑似新增水体；不能直接等同于已确认淹水。"},
+    {"key":"brighter","code":4,"rgba":[238,166,75,205],"label":"Other changes to check","colour":"orange / 橙色","meaning":"Earlier-date candidate mask only: returns became brighter or mask membership changed near filtered edges. 回波增强、原因待核查；不得直接等同于已确认退水或农田损毁。"}
+  ],
+  "answer_rules": [
+    "Classify observed radar signals separately from physical interpretations. All water labels are candidates, not ground truth.",
+    "Never assert confirmed inundation, recession, agricultural damage, flood depth, flood duration or affected population from these classes alone.",
+    "A negative net radar-class area change does not establish reduced flooding. New-candidate area is not net change.",
+    "Only provide pair-specific statistics when the selected ordered pair exactly matches the analysis report; no reusing August–September statistics for October or November."
+  ]
+}

@@ -10,7 +10,10 @@
     "ingest:init": "python3 scripts/ingest.py --init",
     "ingest": "python3 scripts/ingest.py",
     "mock-data": "python3 scripts/make_mock_inputs.py",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "chat:api": "python3 -m backend.server --port 8787",
+    "rag:index": "python3 -m backend.index --rebuild",
+    "chat:test": "python3 -m unittest discover -s backend -t . -p \"test_*.py\""
   },
   "dependencies": {
     "maplibre-gl": "^4.7.1",
