@@ -3,7 +3,8 @@ import type { KeyboardEvent, PointerEvent as ReactPointerEvent } from 'react';
 import maplibregl from 'maplibre-gl';
 import waterClasses from '../../shared/water_classes.json';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { analysisForPair, assetUrl, formatDate, type ComparisonData, type Observation } from '../lib/observations';
+import { analysisForPair, assetUrl, type ComparisonData, type Observation } from '../lib/observations';
+import { usePrefs } from '../lib/prefs';
 
 export type ViewMode = 'before' | 'compare' | 'after' | 'change';
 export type Basemap = 'plain' | 'streets' | 'imagery';
@@ -64,6 +65,7 @@ function addObservation(map: maplibregl.Map, data: ComparisonData, observation: 
 }
 
 export function ObservationMap({ data, baseline, post, mode, basemap, opacity, outline }: Props) {
+  const { t, fd } = usePrefs();
   const selected = useRef({ before: baseline, after: post });
   selected.current = { before: baseline, after: post };
   const analysis = analysisForPair(data, baseline.id, post.id);
@@ -158,6 +160,10 @@ export function ObservationMap({ data, baseline, post, mode, basemap, opacity, o
   useEffect(() => { setBackgroundError(false); }, [basemap]);
 
   useEffect(() => {
+    for (const map of maps.current) map.getCanvas().setAttribute('aria-label', t('Interactive radar map of {name}', { name: data.manifest.aoi.name }));
+  }, [t, data, loaded]);
+
+  useEffect(() => {
     for (const [index, map] of maps.current.entries()) {
       const id = index === 0 ? post.id : baseline.id;
       if (map.getLayer('radar-' + id)) updateDisplay(map, basemap, opacity, outline, displayMode, id);
@@ -182,38 +188,38 @@ export function ObservationMap({ data, baseline, post, mode, basemap, opacity, o
   const leftLoaded = loaded.before === baseline.id;
   const rightLoaded = loaded.after === post.id;
   const ready = leftLoaded && rightLoaded;
-  return <div className="comparison-map" ref={wrapper} data-testid="comparison-map" data-before-loaded={leftLoaded} data-after-loaded={rightLoaded} data-left-id={baseline.id} data-right-id={post.id} data-mode={mode} aria-label="Radar observations of Kalari Abdu">
+  return <div className="comparison-map" ref={wrapper} data-testid="comparison-map" data-before-loaded={leftLoaded} data-after-loaded={rightLoaded} data-left-id={baseline.id} data-right-id={post.id} data-mode={mode} aria-label={t('Radar observations of Kalari Abdu')}>
     <div className="map map-after" ref={afterContainer} style={{ visibility: ready ? 'visible' : 'hidden' }} />
     <div className="map map-before" ref={beforeContainer} style={{ visibility: ready ? 'visible' : 'hidden', clipPath: 'inset(0 ' + (100 - visibleSplit) + '% 0 0)' }} aria-hidden="true" />
-    {!ready && !mapError && <div className="map-loading" role="status">Drawing radar observations…</div>}
-    {mapError && <div className="map-failure" role="alert"><strong>Map unavailable</strong><p>{mapError}</p><a href={assetUrl(baseline.image_url)} target="_blank" rel="noreferrer">Open left image</a><a href={assetUrl(post.image_url)} target="_blank" rel="noreferrer">Open right image</a></div>}
-    {backgroundError && !mapError && <p className="basemap-error" role="status">Background tiles unavailable. The local radar images still work; select Plain for an offline background.</p>}
+    {!ready && !mapError && <div className="map-loading" role="status">{t('Drawing radar observations…')}</div>}
+    {mapError && <div className="map-failure" role="alert"><strong>{t('Map unavailable')}</strong><p>{mapError}</p><a href={assetUrl(baseline.image_url)} target="_blank" rel="noreferrer">{t('Open left image')}</a><a href={assetUrl(post.image_url)} target="_blank" rel="noreferrer">{t('Open right image')}</a></div>}
+    {backgroundError && !mapError && <p className="basemap-error" role="status">{t('Background tiles unavailable. The local radar images still work; select Plain for an offline background.')}</p>}
     <div className="map-date-labels" aria-live="polite">
-      {mode !== 'after' && mode !== 'change' && <div className="map-date before"><span>Left image</span><strong>{formatDate(baseline.date)}</strong></div>}
-      {mode !== 'before' && <div className="map-date after"><span>{mode === 'change' ? 'Changes between dates · unverified' : 'Right image'}</span><strong>{formatDate(post.date)}</strong></div>}
+      {mode !== 'after' && mode !== 'change' && <div className="map-date before"><span>{t('Left image')}</span><strong>{fd(baseline.date)}</strong></div>}
+      {mode !== 'before' && <div className="map-date after"><span>{mode === 'change' ? t('Changes between dates · unverified') : t('Right image')}</span><strong>{fd(post.date)}</strong></div>}
     </div>
-    {displayMode === 'change' && <div className="change-legend" aria-label="Candidate change legend">
-      <strong>What the colours mean</strong>
+    {displayMode === 'change' && <div className="change-legend" aria-label={t('Candidate change legend')}>
+      <strong>{t('What the colours mean')}</strong>
       {['new', 'persistent', 'brighter'].map((key) => {
         const entry = waterClasses.classes.find((item) => item.key === key)!;
-        return <span key={key}><i className="swatch" style={{ background: `rgb(${entry.rgba.slice(0, 3).join(',')})` }} />{entry.label}</span>;
+        return <span key={key}><i className="swatch" style={{ background: `rgb(${entry.rgba.slice(0, 3).join(',')})` }} />{t(entry.label)}</span>;
       })}
-      <small>Orange: brighter in September; water loss is unconfirmed.<br />All colours need checking. Uncoloured areas may also contain water.</small>
+      <small>{t('Orange: brighter in September; water loss is unconfirmed.')}<br />{t('All colours need checking. Uncoloured areas may also contain water.')}</small>
     </div>}
-    <div className="map-navigation" aria-label="Map controls">
-      <span className="north-indicator" title="North is up" aria-label="North is up">↑<small>N</small></span>
-      <button aria-label="Zoom in" onClick={() => maps.current[0]?.zoomIn({ duration: 0 })}>+</button>
-      <button aria-label="Zoom out" onClick={() => maps.current[0]?.zoomOut({ duration: 0 })}>−</button>
-      <button className="reset-view" aria-label="Reset to study area" title="Reset to study area" onClick={() => {
+    <div className="map-navigation" aria-label={t('Map controls')}>
+      <span className="north-indicator" title={t('North is up')} aria-label={t('North is up')}>↑<small>N</small></span>
+      <button aria-label={t('Zoom in')} onClick={() => maps.current[0]?.zoomIn({ duration: 0 })}>+</button>
+      <button aria-label={t('Zoom out')} onClick={() => maps.current[0]?.zoomOut({ duration: 0 })}>−</button>
+      <button className="reset-view" aria-label={t('Reset to study area')} title={t('Reset to study area')} onClick={() => {
         const [west, south, east, north] = data.manifest.aoi.bounds;
         maps.current[0]?.fitBounds([[west, south], [east, north]], { padding: 48, duration: 0 });
       }}><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.7"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5" /><circle cx="12" cy="12" r="3" /></svg></button>
     </div>
     {mode === 'compare' && <div className="swipe-divider" style={{ left: split + '%' }}>
       <div
-        role="slider" tabIndex={0} aria-label="Left and right divider" aria-orientation="horizontal"
+        role="slider" tabIndex={0} aria-label={t('Left and right divider')} aria-orientation="horizontal"
         aria-valuemin={0} aria-valuemax={100} aria-valuenow={split}
-        aria-valuetext={split + '% left image, ' + (100 - split) + '% right image'}
+        aria-valuetext={t('{left}% left image, {right}% right image', { left: split, right: 100 - split })}
         aria-describedby="divider-help" className="swipe-handle"
         onKeyDown={keyboardSplit}
         onPointerDown={(event) => { event.preventDefault(); event.stopPropagation(); pointer.current = event.pointerId; event.currentTarget.focus(); event.currentTarget.setPointerCapture(event.pointerId); updateSplit(event); }}
@@ -223,7 +229,7 @@ export function ObservationMap({ data, baseline, post, mode, basemap, opacity, o
         onLostPointerCapture={() => { pointer.current = null; }}
       ><span aria-hidden="true">‹ ›</span></div>
     </div>}
-    <span id="divider-help" className="sr-only">Drag the divider or use the arrow keys. Home shows only right, End shows only left. Shift and arrow moves ten percent.</span>
-    <span className="map-boundary-legend"><span aria-hidden="true" />{data.manifest.aoi.radius_m / 1000} km study radius</span>
+    <span id="divider-help" className="sr-only">{t('Drag the divider or use the arrow keys. Home shows only right, End shows only left. Shift and arrow moves ten percent.')}</span>
+    <span className="map-boundary-legend"><span aria-hidden="true" />{t('{r} km study radius', { r: data.manifest.aoi.radius_m / 1000 })}</span>
   </div>;
 }

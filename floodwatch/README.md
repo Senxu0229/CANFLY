@@ -323,3 +323,38 @@ separate semantic embedding API configuration.
 
 See [CHAT_ASSISTANT.md](docs/CHAT_ASSISTANT.md) for startup, model paths/settings,
 knowledge-base updates, grounding rules and verification commands.
+
+## Frontend additions: context timeline, accessibility, English/French
+
+These are interface-only changes. Data loading (`src/lib/observations.ts`), map
+rendering logic, the backend, scripts that touch RADARSAT-2 data, and the
+knowledge base are unchanged. With English selected, every visible string and
+ARIA label is identical to before, so the existing e2e selectors still match.
+
+- **Rain & flood context** (timeline heading → *Show rain & flood context*):
+  daily rainfall, the UNOSAT VIIRS 5-day mapped flood area within 5 km, the
+  dam-failure date and the four radar dates on one time axis, with a data table
+  for screen readers. It reads `public/context/kalari_context.json`, built from
+  public, non-RADARSAT files already in this repository:
+
+  ```bash
+  python3 scripts/build_context.py   # re-run after extending the rainfall export
+  ```
+
+  Rainfall comes from `../maiduguri_precip_aug_nov_2024.csv` (30-minute rates in
+  mm/hr, summed to daily mm; incomplete days are skipped) and covers 1 Aug to
+  15 Nov 2024. Any gap is hatched on the chart. If the JSON file is missing, the
+  toggle simply does not appear.
+- **Français / English** in the header (one click, Canada.ca pattern). Strings
+  live in `src/lib/i18n.fr.ts`, keyed by the English text; missing keys fall back
+  to English. Assistant answers stay in English.
+- **Display** menu: text size (3 steps), high contrast for bright light, reduce
+  motion (defaults follow the OS). Skip links to the map and results. Saved in
+  the browser's local storage.
+- **Local UI development without the server export**:
+
+  ```bash
+  python3 scripts/make_mock_observations.py   # SYNTHETIC data into ignored public/observations/
+  ```
+
+  It refuses to overwrite a real export, and every value and credit line says MOCK.

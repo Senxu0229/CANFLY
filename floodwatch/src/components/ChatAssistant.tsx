@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
-import { formatDate } from '../lib/observations';
+import { usePrefs } from '../lib/prefs';
 import type { ViewMode } from './ObservationMap';
 
 type Citation = { id: string; title: string; url: string; excerpt: string };
@@ -44,6 +44,7 @@ function parseReply(value: unknown): Reply {
 }
 
 export function ChatAssistant({ open, onClose, leftId, rightId, leftDate, rightDate, mode, hasAnalysis }: Props) {
+  const { t, fd } = usePrefs();
   const [messages, setMessages] = useState<Message[]>([]);
   const [draft, setDraft] = useState('');
   const [pending, setPending] = useState<string | null>(null);
@@ -96,9 +97,9 @@ export function ChatAssistant({ open, onClose, leftId, rightId, leftDate, rightD
         }),
       });
       if (!response.ok) {
-        const description = response.status === 429 ? 'The assistant is busy. Please try again shortly.'
-          : response.status === 400 || response.status === 422 ? 'The request could not be accepted. Check your question and try again.'
-          : 'The assistant service is unavailable. Please try again once the local service is running.';
+        const description = response.status === 429 ? t('The assistant is busy. Please try again shortly.')
+          : response.status === 400 || response.status === 422 ? t('The request could not be accepted. Check your question and try again.')
+          : t('The assistant service is unavailable. Please try again once the local service is running.');
         let detail = description;
         try { const body = await response.json(); if (typeof body.error === 'string') detail = body.error.slice(0, 300); } catch { /* Proxy may return a non-JSON error. */ }
         throw new Error(detail);
@@ -111,8 +112,8 @@ export function ChatAssistant({ open, onClose, leftId, rightId, leftDate, rightD
     } catch (reason: unknown) {
       if (controller.signal.aborted) return;
       setDraft(message);
-      setError(reason instanceof TypeError ? 'Could not reach the assistant. Check the connection and try again.'
-        : reason instanceof Error ? reason.message : 'The assistant could not answer. Please try again.');
+      setError(reason instanceof TypeError ? t('Could not reach the assistant. Check the connection and try again.')
+        : reason instanceof Error ? reason.message : t('The assistant could not answer. Please try again.'));
     } finally {
       if (request.current === controller) {
         request.current = null;
@@ -127,7 +128,7 @@ export function ChatAssistant({ open, onClose, leftId, rightId, leftDate, rightD
     request.current = null;
     setDraft(pending ?? '');
     setPending(null);
-    setError('Request stopped. You can edit your question and send it again.');
+    setError(t('Request stopped. You can edit your question and send it again.'));
     input.current?.focus({ preventScroll: true });
   }
 
@@ -136,41 +137,41 @@ export function ChatAssistant({ open, onClose, leftId, rightId, leftDate, rightD
   if (!open) return null;
   return <section id="assistant-panel" className="chat-panel" role="dialog" aria-modal="false" aria-labelledby="assistant-title" aria-describedby="assistant-context">
     <header className="chat-header">
-      <div><span className="eyebrow">FloodWatch</span><h2 id="assistant-title">Map assistant</h2></div>
-      <button type="button" className="chat-close" aria-label="Close assistant" onClick={onClose}>×</button>
+      <div><span className="eyebrow">FloodWatch</span><h2 id="assistant-title">{t('Map assistant')}</h2></div>
+      <button type="button" className="chat-close" aria-label={t('Close assistant')} onClick={onClose}>×</button>
     </header>
     <div className="chat-context" id="assistant-context">
-      <strong>{formatDate(leftDate)} → {formatDate(rightDate)}</strong>
-      <span>{hasAnalysis ? 'Candidate-water analysis available' : 'Images only · no water-area analysis for this pair'}</span>
-      <small>Changing dates starts a new conversation.</small>
+      <strong>{fd(leftDate)} → {fd(rightDate)}</strong>
+      <span>{hasAnalysis ? t('Candidate-water analysis available') : t('Images only · no water-area analysis for this pair')}</span>
+      <small>{t('Changing dates starts a new conversation.')}</small>
     </div>
-    <div ref={log} className="chat-log" role="log" aria-label="Chat messages" aria-live="polite" aria-relevant="additions text" aria-busy={pending !== null}>
+    <div ref={log} className="chat-log" role="log" aria-label={t('Chat messages')} aria-live="polite" aria-relevant="additions text" aria-busy={pending !== null}>
       {messages.length === 0 && pending === null && <div className="chat-welcome">
-        <h3>Explore the evidence behind the map</h3>
-        <p>Ask about the radar, study area or current comparison. Answers use local project documents and available map statistics.</p>
-        <div className="chat-starters">{STARTERS.map((question) => <button type="button" key={question} onClick={() => void send(question)}>{question}</button>)}</div>
+        <h3>{t('Explore the evidence behind the map')}</h3>
+        <p>{t('Ask about the radar, study area or current comparison. Answers use local project documents and available map statistics.')}</p>
+        <div className="chat-starters">{STARTERS.map((question) => t(question)).map((question) => <button type="button" key={question} onClick={() => void send(question)}>{question}</button>)}</div>
       </div>}
-      {messages.map((message, index) => <article className={'chat-message ' + message.role} key={index} aria-label={message.role === 'user' ? 'Your question' : 'Assistant answer'}>
-        <span className="chat-speaker">{message.role === 'user' ? 'You' : 'Map assistant'}</span>
+      {messages.map((message, index) => <article className={'chat-message ' + message.role} key={index} aria-label={message.role === 'user' ? t('Your question') : t('Assistant answer')}>
+        <span className="chat-speaker">{message.role === 'user' ? t('You') : t('Map assistant')}</span>
         <p className="chat-answer">{message.content}</p>
         {message.role === 'assistant' && <div className="chat-sources">
-          {message.citations?.length ? <><h3>Sources</h3><ul>{message.citations.map((citation, i) => {
+          {message.citations?.length ? <><h3>{t('Sources')}</h3><ul>{message.citations.map((citation, i) => {
             const href = sourceUrl(citation.url);
-            return <li key={citation.id + ':' + i}>{href ? <a href={href} target="_blank" rel="noopener noreferrer">[{citation.id}] {citation.title} ↗</a> : <strong>[{citation.id}] {citation.title}</strong>}<details><summary>View evidence</summary><p>{citation.excerpt}</p></details></li>;
-          })}</ul></> : <p>No supporting source was cited for this answer.</p>}
+            return <li key={citation.id + ':' + i}>{href ? <a href={href} target="_blank" rel="noopener noreferrer">[{citation.id}] {citation.title} ↗</a> : <strong>[{citation.id}] {citation.title}</strong>}<details><summary>{t('View evidence')}</summary><p>{citation.excerpt}</p></details></li>;
+          })}</ul></> : <p>{t('No supporting source was cited for this answer.')}</p>}
         </div>}
       </article>)}
-      {pending !== null && <><article className="chat-message user" aria-label="Your question"><span className="chat-speaker">You</span><p className="chat-answer">{pending}</p></article><p className="chat-loading" role="status">Checking project sources and preparing an answer…</p></>}
+      {pending !== null && <><article className="chat-message user" aria-label={t('Your question')}><span className="chat-speaker">{t('You')}</span><p className="chat-answer">{pending}</p></article><p className="chat-loading" role="status">{t('Checking project sources and preparing an answer…')}</p></>}
       {error && <p className="chat-error" role="alert">{error}</p>}
     </div>
-    <p className="chat-caution">Map colours show candidates, not confirmed flooding, recession or crop damage. Check the sources; evidence may be incomplete.</p>
+    <p className="chat-caution">{t('Map colours show candidates, not confirmed flooding, recession or crop damage. Check the sources; evidence may be incomplete.')}</p>
     <form className="chat-composer" onSubmit={submit}>
-      <label className="sr-only" htmlFor="assistant-question">Ask about this map</label>
-      <textarea ref={input} id="assistant-question" value={draft} onChange={(event) => setDraft(event.target.value)} maxLength={1800} rows={2} placeholder="Ask about this map…" disabled={pending !== null}
+      <label className="sr-only" htmlFor="assistant-question">{t('Ask about this map')}</label>
+      <textarea ref={input} id="assistant-question" value={draft} onChange={(event) => setDraft(event.target.value)} maxLength={1800} rows={2} placeholder={t('Ask about this map…')} disabled={pending !== null}
         onKeyDown={(event) => { if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing) { event.preventDefault(); void send(draft); } }} />
-      <div className="chat-composer-actions"><span>Answers in English · Enter to send</span>{pending !== null
-        ? <button key="stop" className="button" type="button" onClick={(event) => { event.preventDefault(); cancel(); }}>Stop</button>
-        : <button key="send" className="button primary" type="submit" disabled={!draft.trim()}>Send</button>}</div>
+      <div className="chat-composer-actions"><span>{t('Answers in English · Enter to send')}</span>{pending !== null
+        ? <button key="stop" className="button" type="button" onClick={(event) => { event.preventDefault(); cancel(); }}>{t('Stop')}</button>
+        : <button key="send" className="button primary" type="submit" disabled={!draft.trim()}>{t('Send')}</button>}</div>
     </form>
   </section>;
 }
