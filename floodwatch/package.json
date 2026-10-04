@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "ingest:init": "python3 scripts/ingest.py --init",
     "ingest": "python3 scripts/ingest.py",
-    "mock-data": "python3 scripts/make_mock_inputs.py"
+    "mock-data": "python3 scripts/make_mock_inputs.py",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "maplibre-gl": "^4.7.1",
@@ -17,6 +18,7 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.3.4",

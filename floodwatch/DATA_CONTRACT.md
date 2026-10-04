@@ -1,3 +1,69 @@
+# Active contract: real observation previews (schema 2.0)
+
+The active frontend reads `public/observations/manifest.json`, the referenced
+PNG images, and `aoi.geojson`. It never falls back to legacy mock data.
+
+Required manifest fields:
+
+- `schema_version: "2.0"`, `mode: "imagery-comparison"`.
+- `event`: event name and reference date (`2024-09-10`). This is a timeline
+  reference, not an inferred flood-onset date for every pixel.
+- `aoi`: `name`, `center` in `[longitude, latitude]` order, `radius_m`, and
+  `bounds` in `[west, south, east, north]` order.
+- `observations`: baseline and post-event records with `id`, acquisition
+  `date`, `role`, `label`, `image_url`, source-product identifier, beam mode,
+  polarization, orbit direction, and acquisition timestamp.
+- `aoi_url`: GeoJSON Polygon in EPSG:4326 for the 6 km radius study boundary.
+- `display`: common output grid and stretch. Status is `terrain-corrected-preview`
+  for the current DEM-based export, or `uncalibrated-preview` for legacy GCP
+  placement. Both remain radiometrically uncalibrated; the exporter records
+  `radiometrically_calibrated: false` and `geometry_method`.
+- `limitations` and `credit`: provenance/context, not unsupported accuracy claims.
+
+## Coordinate and display requirements
+
+1. Both PNGs are warped to exactly the same north-up **EPSG:3857** raster grid.
+2. Their common map bounds are the geographic coordinates of that grid's
+   corners. MapLibre image coordinates are NW, NE, SE, SW.
+3. Alpha represents valid display coverage. Transparent/out-of-AOI pixels are
+   not dry land and must never enter flood statistics.
+4. Both previews use the same original log-raw-power display stretch. These
+   are display bytes, not calibrated sigma0 values in dB.
+5. Web Mercator map-unit spacing is not the same as ground spacing or sensor
+   resolving power. Preview resampling does not add spatial detail.
+6. Current placement uses SNAP Range-Doppler terrain correction of original
+   intensity with SRTM elevations and EGM96-to-ellipsoid conversion. The AOI
+   remains fixed on the ground. Legacy exports use zero-height product GCPs.
+   Neither status promises surveyed absolute accuracy or independently verified
+   fine registration between dates; changing shoreline positions are not control points.
+7. The basemap is contextual. Its imagery date is unrelated to the selected
+   RADARSAT-2 date. The circle is an AOI, not a village boundary or flood extent.
+
+`provenance.json` records export validation, source hashes, and the optional
+`terrain_processing` record (DEM, software, graph method, source checks, and
+corrected output hashes). Current image URLs end in `_tc.png`, avoiding stale
+uncorrected image caches. Keep the full
+original product directory for future SAR processing; the cropped complex TIFF
+is not a complete SNAP product.
+
+## What this stage deliberately does not infer
+
+There is no water mask, change classification, flood-area estimate, building
+impact count, continuously observed flood duration, or drying forecast in this
+contract. The August baseline is a selected observation, not proof that all
+pixels were flood-free. Introduce such products only with a separate, verified
+analysis contract and explicit missing-data handling.
+
+---
+
+# Legacy mock/recovery contract (not loaded by the active app)
+
+The following documents the retained prototype pipeline. Its "flood duration"
+implementation uses the event-relative day of the last wet observation, not
+measured continuous inundation duration. Its default threshold is a prototype
+setting and is not validated for our RADARSAT-2 scenes. Raw complex SLC and our
+AEQD preview GeoTIFFs are not valid direct inputs to this importer.
+
 # Data: from the processing server to FloodWatch
 
 There are two layers to this contract.

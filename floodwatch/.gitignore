@@ -8,3 +8,11 @@ incoming/
 incoming_mock/
 # Derived data: keep out of the public repo until the mentors confirm it can be shared.
 # public/data/
+
+# Local real observation exports; regenerate from the server dataset.
+/public/observations/
+/test-results/
+/playwright-report/
+
+# Python processing caches
+__pycache__/
