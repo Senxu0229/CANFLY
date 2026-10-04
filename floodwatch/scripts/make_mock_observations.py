@@ -118,7 +118,7 @@ def main():
 
     persistent, new, lost = 10.0, 2.0, 3.0
     report = {
-        'schema_version': '1.0', 'status': 'exploratory-unvalidated', 'dates': DATES[:2],
+        'schema_version': '1.0', 'status': 'exploratory-unvalidated', 'dates': DATES[:2], 'pixel_size_m': 10,
         'overlay_url': 'observations/water_change_mock.png', 'display_bounds': bounds, 'no_data_area_km2': 0.5,
         'areas': {'common_valid_km2': 110.0, 'before_water_km2': persistent + lost, 'after_water_km2': persistent + new,
                   'persistent_water_km2': persistent, 'new_water_km2': new, 'lost_water_km2': lost, 'net_water_change_km2': new - lost},

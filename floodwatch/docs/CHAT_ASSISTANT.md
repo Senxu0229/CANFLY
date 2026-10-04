@@ -29,14 +29,13 @@ conda activate floodwatch-dev
 npm run dev -- --host 127.0.0.1 --port 5173 --strictPort
 ```
 
-Refresh the browser and click **Ask AI**. The interface and answers are in English;
-questions may still be entered in English or Chinese. Source titles are displayed
-in English; expanded evidence retains the original document text. Examples:
+Refresh the browser and click **Ask AI**. The interface, questions and answers are in English.
+Expanded evidence shows the original document text. Examples:
 
-- `新增的水体是怎么判断出来的？面积是多少？`
-- `这个村子的具体经纬度是多少？`
+- `How is possible new water detected, and how large is it?`
+- `What are the exact coordinates of this village?`
 - `Which satellite acquired these images?`
-- `橙色说明农田已经被洪水毁掉了吗？`
+- `Does orange mean the flood destroyed farmland?`
 
 Changing the selected dates starts a fresh conversation and cancels the old
 browser request. A request already being generated may finish on the server;
@@ -100,11 +99,11 @@ service, then set `LLM_BASE_URL` accordingly.
 ### Embeddings and retrieval
 
 No separate neural embedding weights were found locally. This first version
-therefore fits **TF-IDF character/word vectors** over the small bilingual corpus.
+therefore fits **TF-IDF character/word vectors** over the small English corpus.
 These are lexical embeddings, **not a downloaded semantic embedding model**.
 They support reproducible cosine retrieval with no extra dependencies/downloads,
 but paraphrases and cross-language matching are weaker than a multilingual neural
-encoder. The generated bilingual documents include natural question variants.
+encoder. The generated documents include natural question variants.
 Retrieval scores are ranking scores, not evidence confidence or model accuracy.
 
 To use an independently available OpenAI-compatible semantic embedding service,
@@ -137,7 +136,7 @@ python3 -m backend.index --rebuild
 
 # Optional checks and direct retrieval inspection:
 python3 scripts/refresh_knowledge.py --check
-python3 -m backend.index --query '新增的水体是怎么判断出来的？'
+python3 -m backend.index --query 'How is possible new water detected?'
 ```
 
 `--rebuild` refreshes generated docs, chunks Markdown/TXT (1100 characters with
@@ -156,9 +155,9 @@ PDF or image ingestion. Individual documents are limited to 1 MB.
 `shared/water_classes.json` supplies class IDs/meanings to the Python classifier,
 PNG exporter, map legend and the assistant on **every request**:
 
-- **Light blue / 浅蓝色:** possible new water, not confirmed inundation.
-- **Dark blue / 深蓝色:** possible water on both dates, not proven permanent water.
-- **Orange / 橙色:** brighter returns / departure from the earlier candidate mask;
+- **Light blue:** possible new water, not confirmed inundation.
+- **Dark blue:** possible water on both dates, not proven permanent water.
+- **Orange:** brighter returns / departure from the earlier candidate mask;
   cause requires checking, not confirmed recession or crop damage.
 
 The API accepts selected date IDs and view mode, and reconstructs statistics from
@@ -184,7 +183,7 @@ npm run build
 npm run test:e2e
 ```
 
-Backend tests cover indexing/persistence, bilingual retrieval, stale source/model
+Backend tests cover indexing/persistence, retrieval, stale source/model
 rejection, source identity, date/area isolation, mandatory rules, prompt injection
 placement, and citation validation. Browser tests cover chat context, sources,
 errors/retries, cancellation, date changes, and mobile layout. Real Qwen requests

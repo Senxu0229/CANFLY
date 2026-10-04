@@ -1,9 +1,8 @@
-# Uncertainty and missing evidence / 不确定性与证据缺口
+# Uncertainty and missing evidence
 
 The project status is `exploratory-unvalidated`. Observation facts include acquisition
 metadata, calibrated backscatter, pixel-class transitions, and computed class areas.
 Interpreting those as inundation, recession, land cover, or damage remains a hypothesis.
-中文：观测事实是雷达回波与候选类别变化；洪水成因、退水和农田损毁属于未核实推测。
 
 No independent same-date ground-truth water map is supplied. The current knowledge
 and analysis do not establish flood depth, flood duration, peak water level,
@@ -22,11 +21,14 @@ Analysis report limitations:
 - The 28 August baseline may contain water; 21 September is not necessarily the flood peak. New water is not net water increase or attributable flood damage.
 - Areas use UTM grid pixel area (approximately ground area); outside-AOI and missing pixels are excluded.
 
-中文：平滑裸地、道路、雷达阴影可能像水；植被覆盖或城市中的淹水可能漏检。
-只改阈值不能证明分类准确，也不能为了得到预期面积而宣称洪灾范围。要判断橙色是否农田损毁，
-仍缺少相应日期的独立水体、农田或现场证据。本知识库没有虚构外部文献或外部验证结果。
+Smooth bare soil, roads and radar shadow can resemble water; flooding under vegetation
+or in built-up areas can be missed. Changing the threshold alone cannot prove the
+classification is accurate or justify a flood extent chosen to reach an expected area.
+Deciding whether orange is farmland damage still needs independent water, farmland or
+field evidence from matching dates. This knowledge base does not invent external
+literature or external validation results.
 
-## Verified local sources / 本地来源
+## Verified local sources
 
 - `public/observations/analysis_report_7b1444e7f771.json`; SHA256 `ebd63f760b8b18e98f5d04bd1292867e1d020a2178976f985b8c29ea5c4dcf58`.
 - `public/observations/manifest.json`; SHA256 `e59702c175c0f1ec75cb04253078f1727eeda88932dc26973ded4f40193532e9`.

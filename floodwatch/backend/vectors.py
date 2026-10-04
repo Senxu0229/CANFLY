@@ -23,7 +23,7 @@ def terms(text):
     normalized = re.sub(r'\b(?:the|a|an|is|are|was|were|how|what|which|when|where|why|do|does|can|you|of|to|in|for|and|it|this|that|many)\b', ' ', text.lower())
     normalized = re.sub(r'\s+', ' ', normalized).strip()
     words = re.findall(r'[a-z0-9]+', normalized)
-    # Character n-grams support short Chinese queries without a tokenizer download.
+    # Character n-grams support short queries without a tokenizer download.
     return Counter(['w:' + w for w in words] + ['c:' + normalized[i:i+n]
         for n in (2, 3, 4) for i in range(max(0, len(normalized)-n+1))
         if not normalized[i:i+n].isspace()])

@@ -141,7 +141,7 @@ def build_documents(project, dataset_root):
 
     def document(title, body, paths):
         provenance = '\n'.join(source_record(path, project) for path in paths)
-        return f'# {title}\n\n{body.strip()}\n\n## Verified local sources / 本地来源\n\n{provenance}\n'
+        return f'# {title}\n\n{body.strip()}\n\n## Verified local sources\n\n{provenance}\n'
 
     lon, lat = manifest['aoi']['center']
     radius = manifest['aoi']['radius_m']
@@ -152,18 +152,18 @@ def build_documents(project, dataset_root):
     sensitivity = report['sensitivity']
     area = lambda key: f"{a[key]:.4f}"
     docs = {}
-    docs['01_location_and_dates.md'] = document('Kalari Abdu location and map dates / 村庄位置与日期', f'''
-常见问题 / FAQ: 这个村子的具体经纬度是多少？Kalari Abdu 在哪里？
+    docs['01_location_and_dates.md'] = document('Kalari Abdu location and map dates', f'''
+FAQ: What are the exact coordinates of the village? Where is Kalari Abdu?
 
 Kalari Abdu is the active project study area in Nigeria. The map centre is
 longitude {lon}° E, latitude {lat}° N (WGS84). GeoJSON uses [longitude, latitude]:
-[{lon}, {lat}]. 中文：经度 {lon} 东经，纬度 {lat} 北纬。
+[{lon}, {lat}].
 
 The area of interest is a circle of radius {radius} metres ({radius / 1000:g} km),
 approximately 12 km across. This is a radius, not a 6 km-wide square.
 The two-date common valid analysis area is {area('common_valid_km2')} km².
 
-Available radar acquisition dates / 已有影像日期: {dates}.
+Available radar acquisition dates: {dates}.
 The configured event reference date is {manifest['event']['date']}; the application
 labels the event “{manifest['event']['name']}”. This is project metadata, not evidence
 that every pixel flooded on that day. The baseline image may already contain water.
@@ -171,20 +171,18 @@ that every pixel flooded on that day. The baseline image may already contain wat
 Quantified change analysis exists only for 2024-08-28 → 2024-09-21 in that order.
 Other date selections, including October/November and the reversed pair, are image
 comparisons only. There are no calculated change areas for those selected pairs.
-中文：目前只有 8 月 28 日到 9 月 21 日有变化统计，不能将此面积套用到其他日期。
 ''', [manifest_path, report_path])
 
     rows = '\n'.join(f"- {item['date']}: {item['acquisition_utc']} (UTC raw-data start); {item['beam_mode']}, {item['polarization']}, {item['orbit_direction']}.\n  Product: `{item['source_product']}`."
                      for item, _ in metadata)
-    docs['02_satellite_observations.md'] = document('Satellite and source observations / 卫星与原始数据', f'''
-常见问题 / FAQ: 拍摄卫星是哪一个？用的是什么卫星和波束模式？
-English FAQ: Which satellite or spacecraft acquired these images? What radar sensor, beam mode and polarization do we use?
+    docs['02_satellite_observations.md'] = document('Satellite and source observations', f'''
+FAQ: Which satellite or spacecraft acquired these images? What radar sensor, beam mode and polarization do we use?
 
 The four local source products are RADARSAT-2 SAR (synthetic aperture radar),
 SLC (single look complex). These are radar measurements, not visible-light colour
 photographs. All four source XML files identify beam mode XF0W2, HH polarization,
-and Descending orbit direction. 中文：卫星是 RADARSAT-2，合成孔径雷达 SAR，
-HH 极化，XF0W2 波束，降轨。相同模式不等于已经验证水体分类准确。
+and Descending orbit direction. Using the same mode does not by itself validate the
+water classification.
 
 {rows}
 
@@ -193,8 +191,8 @@ The XML first-image-line zero-Doppler time is a different metadata field.
 No additional satellite or observation dates are available in this active manifest.
 ''', [xml_path for _, xml_path in metadata])
 
-    docs['03_water_detection_method.md'] = document('How possible water is detected / 疑似水体识别方法', f'''
-常见问题 / FAQ: 新增的水体是怎么判断出来的？如何计算水体面积？水体识别用什么阈值？
+    docs['03_water_detection_method.md'] = document('How possible water is detected', f'''
+FAQ: How is possible new water detected? How is water area calculated? What threshold identifies water?
 
 For the analysed 2024-08-28 → 2024-09-21 pair, {calibration['software']} read the
 complete HH SLC products, calibrated linear sigma0 using the product sigma LUT,
@@ -212,30 +210,31 @@ Connected components with fewer than {method['minimum_water_patch_pixels']} pixe
 are removed separately from each date using {method['connectivity']}-neighbour connectivity.
 Nine 10 m pixels are 900 m², or 0.09 hectares. Missing/outside-AOI pixels are excluded.
 
-中文：先定标、地形校正、统一网格，再对线性功率平滑，转成 dB 后按阈值分类。
-当前共同阈值是 {threshold} dB，低于它只表示疑似水体。统计依据是分析 TIFF，
-不是网页 PNG 缩略图。疑似新增水体表示前期未满足水体候选条件、后期满足候选条件，
-两期掩膜均已去除小斑块；并不是所有新增黑点都能确认为洪水。
-每个分析像素为 10 × 10 = 100 平方米，类别面积 = 像素个数 × 100 平方米，
-除以 1,000,000 转为平方公里。10 m 网格不代表独立的 10 m 空间分辨率。
+In short: calibrate, terrain-correct, resample to one grid, smooth linear power,
+convert to dB and classify with the shared threshold. Below {threshold} dB only means
+possible water. Statistics come from the analysis TIFFs, not the web PNG previews.
+Possible new water means the earlier date did not meet the candidate rule and the
+later date did, with small patches removed from both masks; not every new dark
+pixel is confirmed flooding. Each analysis pixel is 10 × 10 = 100 m²; the 10 m grid
+does not mean an independent 10 m spatial resolution.
 Area = retained class pixel count × 100 m² / 1,000,000, expressed in km².
 This is approximate ground area from UTM grid pixels, not a validated flood extent.
 ''', [report_path, algorithm_path, calibration_path])
 
-    docs['04_legend_and_class_rules.md'] = document('Map legend and class meanings / 地图图例与分类含义', f'''
-常见问题 / FAQ: 橙色是什么意思？橙色是不是被破坏的农田？浅蓝色和深蓝色代表什么？
+    docs['04_legend_and_class_rules.md'] = document('Map legend and class meanings', f'''
+FAQ: What does orange mean? Is orange damaged farmland? What do light blue and dark blue represent?
 
 These classes describe the ordered 2024-08-28 → 2024-09-21 pair, using a shared
 threshold of {threshold} dB and the small-patch cleanup described in the method.
 
-- Light blue / cyan / 浅蓝色: “{classes['new']['label']}”, class 3. The pixel is outside
+- Light blue / cyan: “{classes['new']['label']}”, class 3. The pixel is outside
   the cleaned baseline low-return mask and inside the later low-return mask.
-  It is 疑似新增水体, not confirmed inundation or attributable flood damage.
-- Dark blue / 深蓝色: “{classes['persistent']['label']}”, class 2. The pixel is inside
+  It is possible new water, not confirmed inundation or attributable flood damage.
+- Dark blue: “{classes['persistent']['label']}”, class 2. The pixel is inside
   both cleaned low-return masks. It does not establish permanent water or when flooding began.
-- Orange / 橙色: “{classes['brighter']['label']}”, class 4. The pixel is inside the
+- Orange: “{classes['brighter']['label']}”, class 4. The pixel is inside the
   baseline low-return mask and outside the later low-return mask: a change toward
-  stronger returns requiring verification. 回波增强、原因待核查。
+  stronger returns requiring verification. Brighter returns; the cause needs checking.
   Small-patch filtering also affects the masks, so this is not a per-pixel proof
   of a raw signal increase. It does not establish confirmed water recession,
   damaged farmland, crop loss, or recovery.
@@ -245,31 +244,31 @@ threshold of {threshold} dB and the small-patch cleanup described in the method.
 
 The grayscale image displays calibrated radar brightness; it is not a semantic
 map of water, fields, shrubs, or soil. Orange change may have several explanations;
-none is confirmed by the current classification. 中文：不能把橙色直接解释为退水或农田损毁，
-也不能把浅蓝色直接当成已确认淹水。代码变量 `lost_water_km2` 是类别面积，并非已核实退水面积。
+none is confirmed by the current classification. Do not read orange as recession or
+farmland damage, or light blue as confirmed inundation. The code variable
+`lost_water_km2` is a class area, not a verified recession area.
 ''', [algorithm_path, report_path, contract_path])
 
-    docs['05_current_two_date_statistics.md'] = document('Current two-date candidate areas / 当前两期疑似水体面积', f'''
+    docs['05_current_two_date_statistics.md'] = document('Current two-date candidate areas', f'''
 Scope: 2024-08-28 → 2024-09-21 only. These values come from the active website
 analysis report, using threshold {threshold} dB ({method['threshold_method']}).
 They describe radar threshold classes and are not ground-truth water measurements.
 
-| Observation/class / 观测或类别 | Area (km²) |
+| Observation/class | Area (km²) |
 | --- | ---: |
-| 2024-08-28 possible water / 灾前疑似水体 | {area('before_water_km2')} |
-| 2024-09-21 possible water / 灾后疑似水体 | {area('after_water_km2')} |
-| Dark blue, possible water on both dates / 深蓝 | {area('persistent_water_km2')} |
-| Light blue, possible new water / 浅蓝疑似新增 | {area('new_water_km2')} |
-| Orange, stronger-return transition to check / 橙色待核查 | {area('lost_water_km2')} |
-| Later minus baseline class area / 两期候选类别面积差 | {area('net_water_change_km2')} |
-| Common valid comparison area / 共同有效范围 | {area('common_valid_km2')} |
+| 2024-08-28 possible water | {area('before_water_km2')} |
+| 2024-09-21 possible water | {area('after_water_km2')} |
+| Dark blue, possible water on both dates | {area('persistent_water_km2')} |
+| Light blue, possible new water | {area('new_water_km2')} |
+| Orange, stronger-return transition to check | {area('lost_water_km2')} |
+| Later minus baseline class area | {area('net_water_change_km2')} |
+| Common valid comparison area | {area('common_valid_km2')} |
 
 Why is the August candidate area larger? The measured statement is that more
 pixels met this radar classification in August. That does not demonstrate that
 true water extent decreased. The baseline may already contain water; smooth soil,
 registration, mixed pixels, vegetation, and threshold choice can affect classes.
 The dataset has no independent same-date water labels establishing the cause.
-中文：八月候选类别更大不等于真实洪水变少，原因证据不足，不能倒推为已确认退水。
 
 Independent ±1 dB thresholds on each date give possible-new-water areas between
 {sensitivity['new_water_min_km2']:.4f} and {sensitivity['new_water_max_km2']:.4f} km².
@@ -279,11 +278,10 @@ computed candidate areas. The current page's selected dates determine applicabil
 ''', [report_path])
 
     limits = '\n'.join(f'- {limitation}' for limitation in report['limitations'])
-    docs['06_uncertainty_and_missing_evidence.md'] = document('Uncertainty and missing evidence / 不确定性与证据缺口', f'''
+    docs['06_uncertainty_and_missing_evidence.md'] = document('Uncertainty and missing evidence', f'''
 The project status is `{report['status']}`. Observation facts include acquisition
 metadata, calibrated backscatter, pixel-class transitions, and computed class areas.
 Interpreting those as inundation, recession, land cover, or damage remains a hypothesis.
-中文：观测事实是雷达回波与候选类别变化；洪水成因、退水和农田损毁属于未核实推测。
 
 No independent same-date ground-truth water map is supplied. The current knowledge
 and analysis do not establish flood depth, flood duration, peak water level,
@@ -295,9 +293,12 @@ is visual context; its image date is not supplied as validation of these SAR dat
 Analysis report limitations:
 {limits}
 
-中文：平滑裸地、道路、雷达阴影可能像水；植被覆盖或城市中的淹水可能漏检。
-只改阈值不能证明分类准确，也不能为了得到预期面积而宣称洪灾范围。要判断橙色是否农田损毁，
-仍缺少相应日期的独立水体、农田或现场证据。本知识库没有虚构外部文献或外部验证结果。
+Smooth bare soil, roads and radar shadow can resemble water; flooding under vegetation
+or in built-up areas can be missed. Changing the threshold alone cannot prove the
+classification is accurate or justify a flood extent chosen to reach an expected area.
+Deciding whether orange is farmland damage still needs independent water, farmland or
+field evidence from matching dates. This knowledge base does not invent external
+literature or external validation results.
 ''', [report_path, manifest_path])
     return docs
 

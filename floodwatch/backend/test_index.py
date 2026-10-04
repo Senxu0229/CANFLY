@@ -1,6 +1,6 @@
 """Offline RAG checks: python3 -m unittest backend.test_index -v.
 
-Fixtures are deliberately bilingual; default lexical embeddings are tested as
+Fixtures use plain English; default lexical embeddings are tested as
 lexical retrieval, not claimed to provide semantic translation.
 """
 import dataclasses
@@ -17,18 +17,18 @@ from .vectors import cosine, embeddings, fit_tfidf
 
 
 FIXTURES = {
-    'location.md': '# Village location / 村庄位置\n\n'
+    'location.md': '# Village location\n\n'
         'Kalari Abdu village center: latitude 11.7367804 N, longitude 13.2846742 E. '
-        'The study radius is 6 km. 村庄中心纬度 11.7367804，经度 13.2846742，研究范围半径6公里。',
-    'methods/water.txt': '# Candidate water detection / 疑似新增水体判断\n\n'
+        'The study radius is 6 km around the village centre coordinates.',
+    'methods/water.txt': '# Candidate water detection\n\n'
         'Possible new water means HH sigma0 is above the shared threshold before and below it after. '
         'The threshold is -12.40234375 dB. Calibrated radar is smoothed on a 10 m grid. '
-        '疑似新增水体根据两期雷达回波和共同阈值判断。浅蓝色不是已确认洪水，橙色是回波增强、原因待核查。',
-    'satellite.md': '# Satellite acquisition / 卫星拍摄资料\n\n'
+        'Light blue is not confirmed flooding; orange means brighter returns whose cause needs checking.',
+    'satellite.md': '# Satellite acquisition\n\n'
         'The satellite is RADARSAT-2. Acquisitions use XF0W2 beam mode, HH polarization, '
-        'descending orbit. 拍摄卫星为RADARSAT-2，波束模式XF0W2，极化HH，降轨。',
-    'unrelated.txt': '# Garden notes / 花园笔记\n\n'
-        'Tomato seedlings need regular watering. 花园番茄幼苗需要浇水。 This document has no radar evidence.',
+        'descending orbit.',
+    'unrelated.txt': '# Garden notes\n\n'
+        'Tomato seedlings need regular watering. This document has no radar evidence.',
 }
 
 
@@ -56,7 +56,7 @@ class ChunkingTests(unittest.TestCase):
         long_line = ' '.join(f'point-{i:06d}' for i in range(1000))
         chunks = self.assert_complete_bounded_chunks(long_line)
         self.assertGreater(len(chunks), 5)
-        paragraphs = '\n\n'.join(f'Section {i:04d}: ' + f'记录{i:04d}，' * 43 for i in range(30))
+        paragraphs = '\n\n'.join(f'Section {i:04d}: ' + f'record{i:04d}, ' * 43 for i in range(30))
         self.assert_complete_bounded_chunks(paragraphs)
 
     def test_empty_and_short_documents(self):
@@ -77,18 +77,18 @@ class IndexTests(unittest.TestCase):
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text(text, encoding='utf-8')
 
-    def test_bilingual_queries_retrieve_relevant_local_documents(self):
+    def test_queries_retrieve_relevant_local_documents(self):
         summary = rebuild(self.settings)
         self.assertEqual(summary['documents'], len(FIXTURES))
         self.assertEqual(summary['embedding_provider'], 'tfidf')
         with Index(self.settings) as index:
             for query, expected in [
                 ('village center latitude longitude', 'location.md'),
-                ('村庄中心的经纬度和半径', 'location.md'),
+                ('centre coordinates and radius of the village', 'location.md'),
                 ('How is possible new water detected using the threshold?', 'methods/water.txt'),
-                ('浅蓝色疑似新增水体怎么判断？', 'methods/water.txt'),
+                ('how is light blue possible new water decided?', 'methods/water.txt'),
                 ('Which satellite and beam mode acquired the radar?', 'satellite.md'),
-                ('拍摄卫星和波束模式是什么？', 'satellite.md'),
+                ('what beam mode and polarization did the satellite use?', 'satellite.md'),
             ]:
                 with self.subTest(query=query):
                     results = index.retrieve(query)
@@ -111,7 +111,7 @@ class IndexTests(unittest.TestCase):
     def test_citation_identity_resolves_exact_indexed_document(self):
         rebuild(self.settings)
         with Index(self.settings) as index:
-            hit = index.retrieve('浅蓝色疑似新增水体判断')[0]
+            hit = index.retrieve('light blue candidate water detection threshold')[0]
             source = index.document(hit['doc_id'])
             self.assertIsNotNone(source)
             self.assertEqual(source['name'], hit['name'])
@@ -215,7 +215,7 @@ class IndexTests(unittest.TestCase):
 class VectorTests(unittest.TestCase):
     def test_lexical_embeddings_are_normalized_and_unknown_terms_have_no_evidence(self):
         settings = Settings()
-        corpus = ['SAR threshold water 雷达 水体', 'Village coordinates 村庄 经纬度']
+        corpus = ['SAR threshold water radar', 'Village coordinates latitude longitude']
         idf = fit_tfidf(corpus)
         vectors = embeddings(settings, corpus + ['🦒'], idf)
         for vector in vectors[:2]:

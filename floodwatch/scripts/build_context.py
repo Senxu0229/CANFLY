@@ -2,8 +2,8 @@
 """Build the small public context file used by the timeline chart.
 
 Inputs are public, non-RADARSAT data already in the CANFLY repository:
-  * ../maiduguri_precip_aug_nov_2024.csv         30-minute rain rate (mm/hr), summed to daily mm
-    (falls back to ../Kalari_Abdu_NASA_Rainfall_Daily_2024.csv, daily mm, if absent)
+  * ../rainfall_data/maiduguri_precip_aug_nov_2024.csv   NASA GPM IMERG V07 30-minute rain rate (mm/hr), summed to daily mm
+    (falls back to ../rainfall_data/Kalari_Abdu_NASA_Rainfall_Daily_2024.csv, daily mm, if absent)
   * ../kalari-flood-study/data/flood_summary.csv  UNOSAT VIIRS 5-day maximum flood extent
 
 Output: public/context/kalari_context.json (tracked; contains no RADARSAT-2 data).
@@ -30,9 +30,9 @@ def main():
 
     rain_path = args.rain
     if rain_path is None:
-        rain_path = REPO / 'maiduguri_precip_aug_nov_2024.csv'
+        rain_path = REPO / 'rainfall_data' / 'maiduguri_precip_aug_nov_2024.csv'
         if not rain_path.exists():
-            rain_path = REPO / 'Kalari_Abdu_NASA_Rainfall_Daily_2024.csv'
+            rain_path = REPO / 'rainfall_data' / 'Kalari_Abdu_NASA_Rainfall_Daily_2024.csv'
     totals, counts = {}, {}
     with rain_path.open(newline='') as handle:
         reader = csv.DictReader(handle)
@@ -72,7 +72,7 @@ def main():
         'domain': [args.start, args.end],
         'rain': {
             'label': 'Daily rainfall',
-            'source': ('NASA satellite rainfall estimate for the Maiduguri area, 30-minute rates summed to daily totals (CANFLY repository)'
+            'source': ('NASA GPM IMERG V07 precipitation for the Maiduguri area, 30-minute rates summed to daily totals'
                        if half_hourly else 'NASA satellite rainfall estimate, exported from Google Earth Engine (CANFLY repository)'),
             'file': rain_path.name,
             'unit': 'mm/day',

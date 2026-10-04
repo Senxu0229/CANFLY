@@ -6,7 +6,7 @@
  ],
  "rain": {
   "label": "Daily rainfall",
-  "source": "NASA satellite rainfall estimate for the Maiduguri area, 30-minute rates summed to daily totals (CANFLY repository)",
+  "source": "NASA GPM IMERG V07 precipitation for the Maiduguri area, 30-minute rates summed to daily totals",
   "file": "maiduguri_precip_aug_nov_2024.csv",
   "unit": "mm/day",
   "coverage": [

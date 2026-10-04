@@ -318,7 +318,7 @@ automatic playback and interpolated imagery are not part of this version.
 verified project documents and clickable citations. The model is reused from the
 server cache; no model download is needed. A small Python API runs on port 8787,
 proxied through Vite. Generation and embedding settings are separate; the initial
-small bilingual knowledge base uses local TF-IDF vectors, with an optional
+small English knowledge base uses local TF-IDF vectors, with an optional
 separate semantic embedding API configuration.
 
 See [CHAT_ASSISTANT.md](docs/CHAT_ASSISTANT.md) for startup, model paths/settings,
@@ -341,8 +341,8 @@ ARIA label is identical to before, so the existing e2e selectors still match.
   python3 scripts/build_context.py   # re-run after extending the rainfall export
   ```
 
-  Rainfall comes from `../maiduguri_precip_aug_nov_2024.csv` (30-minute rates in
-  mm/hr, summed to daily mm; incomplete days are skipped) and covers 1 Aug to
+  Rainfall comes from `../rainfall_data/maiduguri_precip_aug_nov_2024.csv` (NASA GPM
+  IMERG V07, 30-minute rates in mm/hr, summed to daily mm; incomplete days are skipped) and covers 1 Aug to
   15 Nov 2024. Any gap is hatched on the chart. If the JSON file is missing, the
   toggle simply does not appear.
 - **Français / English** in the header (one click, Canada.ca pattern). Strings
