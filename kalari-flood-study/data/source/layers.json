@@ -1,0 +1,207 @@
+[
+  {
+    "layer": "VIIRS_20240905_20240909_MaximumFloodExtent_NGA",
+    "geometry": "MultiPolygon",
+    "features": 1
+  },
+  {
+    "layer": "VIIRS_20240905_20240909_CloudObstruction_NGA",
+    "geometry": "MultiPolygon",
+    "features": 1
+  },
+  {
+    "layer": "Confidence_ID",
+    "geometry": null,
+    "features": 4
+  },
+  {
+    "layer": "Water_StatusID",
+    "geometry": null,
+    "features": 3
+  },
+  {
+    "layer": "Water_Class",
+    "geometry": null,
+    "features": 8
+  },
+  {
+    "layer": "Field_Validation",
+    "geometry": null,
+    "features": 4
+  },
+  {
+    "layer": "VIIRS_20240905_20240909_AnalysisExtent_NGA",
+    "geometry": "MultiPolygon",
+    "features": 1
+  },
+  {
+    "layer": "PHR_20240813_AnalysisExtent_Gashua",
+    "geometry": "MultiPolygon",
+    "features": 1
+  },
+  {
+    "layer": "PHR_20240813_WaterExtent_Gashua",
+    "geometry": "MultiPolygon",
+    "features": 1
+  },
+  {
+    "layer": "PHR_20240815_AnalysisExtent_BursariState",
+    "geometry": "MultiPolygon",
+    "features": 1
+  },
+  {
+    "layer": "PHR_20240815_WaterExtent_BursariState",
+    "geometry": "MultiPolygon",
+    "features": 1
+  },
+  {
+    "layer": "VIIRS_20240914_20240918_CloudObstruction_NGA",
+    "geometry": "MultiPolygon",
+    "features": 1
+  },
+  {
+    "layer": "VIIRS_20240914_20240918_MaximumFloodExtent_NGA",
+    "geometry": "MultiPolygon",
+    "features": 1
+  },
+  {
+    "layer": "S2_20240909_20240919_WaterExtent_Dikwa",
+    "geometry": "MultiPolygon",
+    "features": 1
+  },
+  {
+    "layer": "S2_20240909_20240919_AnalysisExtent_Dikwa",
+    "geometry": "MultiPolygon",
+    "features": 1
+  },
+  {
+    "layer": "S2_20240909_20240919_PotentiallyAffectedStructures_Dikwa",
+    "geometry": "Point",
+    "features": 1056
+  },
+  {
+    "layer": "WarehouseCompounds",
+    "geometry": "Point",
+    "features": 0
+  },
+  {
+    "layer": "Tunnels",
+    "geometry": "Point",
+    "features": 0
+  },
+  {
+    "layer": "Stations",
+    "geometry": "Point",
+    "features": 0
+  },
+  {
+    "layer": "Roads",
+    "geometry": "MultiLineString",
+    "features": 63
+  },
+  {
+    "layer": "Railways",
+    "geometry": "MultiLineString",
+    "features": 0
+  },
+  {
+    "layer": "Ports",
+    "geometry": "Point",
+    "features": 0
+  },
+  {
+    "layer": "Obstacles",
+    "geometry": "Point",
+    "features": 0
+  },
+  {
+    "layer": "FuelSupplyPoints",
+    "geometry": "Point",
+    "features": 0
+  },
+  {
+    "layer": "FerryCrossings",
+    "geometry": "Point",
+    "features": 0
+  },
+  {
+    "layer": "EntryPoints",
+    "geometry": "Point",
+    "features": 0
+  },
+  {
+    "layer": "Bridges",
+    "geometry": "Point",
+    "features": 0
+  },
+  {
+    "layer": "Aerodromes",
+    "geometry": "Point",
+    "features": 0
+  },
+  {
+    "layer": "S2_20240909_20240919_PotentiallyAffectedRoad_Dikwa",
+    "geometry": "MultiLineString",
+    "features": 64
+  },
+  {
+    "layer": "VIIRS_20240919_20240923_CloudObstruction_NGA",
+    "geometry": "MultiPolygon",
+    "features": 1
+  },
+  {
+    "layer": "VIIRS_20240919_20240923_MaximumFloodExtent_NGA",
+    "geometry": "MultiPolygon",
+    "features": 1
+  },
+  {
+    "layer": "VIIRS_20240926_20240930_CloudObstruction_NGA",
+    "geometry": "MultiPolygon",
+    "features": 1
+  },
+  {
+    "layer": "VIIRS_20240926_20240930_MaximumFloodExtent_NGA",
+    "geometry": "MultiPolygon",
+    "features": 1
+  },
+  {
+    "layer": "VIIRS_20241109_20241113_CloudObstruction_NGA",
+    "geometry": "MultiPolygon",
+    "features": 1
+  },
+  {
+    "layer": "VIIRS_20241027_20241031_MaximumFloodExtent_NGA",
+    "geometry": "MultiPolygon",
+    "features": 1
+  },
+  {
+    "layer": "VIIRS_20241109_20241113_MaximumFloodExtent_NGA",
+    "geometry": "MultiPolygon",
+    "features": 1
+  },
+  {
+    "layer": "VIIRS_20241027_20241031_CloudObstruction_NGA",
+    "geometry": "MultiPolygon",
+    "features": 1
+  },
+  {
+    "layer": "fras_aux_IDP_Sites_Template_FC",
+    "geometry": null,
+    "features": 0
+  },
+  {
+    "layer": "fras_blk_IDP_Sites_Template_FC",
+    "geometry": null,
+    "features": 0
+  },
+  {
+    "layer": "fras_bnd_IDP_Sites_Template_FC",
+    "geometry": null,
+    "features": 0
+  },
+  {
+    "layer": "fras_ras_IDP_Sites_Template_FC",
+    "geometry": null,
+    "features": 0
+  }
+]
