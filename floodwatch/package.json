@@ -13,7 +13,8 @@
     "test:e2e": "playwright test",
     "chat:api": "python3 -m backend.server --port 8787",
     "rag:index": "python3 -m backend.index --rebuild",
-    "chat:test": "python3 -m unittest discover -s backend -t . -p \"test_*.py\""
+    "chat:test": "python3 -m unittest discover -s backend -t . -p \"test_*.py\"",
+    "serve:public": "node scripts/serve_public.mjs"
   },
   "dependencies": {
     "maplibre-gl": "^4.7.1",

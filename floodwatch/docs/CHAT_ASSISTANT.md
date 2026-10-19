@@ -43,6 +43,57 @@ if an immediate retry says busy, wait briefly. Chat transcripts are held only in
 the browser's memory and sent for the current request; the API does not save them.
 The panel is a text assistant: it does not run GIS operations or inspect image pixels.
 
+## Public HTTPS access on this server
+
+The existing laboratory Nginx configuration terminates HTTPS at
+**https://damlr-w08.research.cs.dal.ca:8001/** and proxies to
+`http://127.0.0.1:8001`. `scripts/serve_public.mjs` serves only the production
+`dist/` directory and forwards `/api/` to the local Python API on port 8787.
+The vLLM endpoint remains on loopback port 8002. No Nginx or certificate changes
+were needed. External reachability still depends on the laboratory firewall.
+
+With the API and vLLM already running, start the public web service from the
+project directory:
+
+```bash
+source /home/grad/zqin/miniforge3/etc/profile.d/conda.sh
+conda activate floodwatch-dev
+npm run build
+npm run serve:public
+```
+
+For a detached process that survives SSH disconnects, use this instead of the
+last command (only when the local port 8001 service is stopped):
+
+```bash
+mkdir -p .rag
+nohup node scripts/serve_public.mjs > .rag/public-web.log 2>&1 < /dev/null &
+printf '%s\n' "$!" > .rag/public-web.pid
+```
+
+To stop that public web process, first inspect its recorded PID, then terminate
+it if it is the FloodWatch server:
+
+```bash
+ps -p "$(cat .rag/public-web.pid)" -o pid,args
+kill "$(cat .rag/public-web.pid)"
+```
+
+This is a public demo without a login: reachable visitors can view the exported
+images, download the files offered by the GIS, and use the assistant. Private
+configuration, model files and the RAG database are not served. Responses and
+citation documents intentionally remain accessible through `/api/`.
+
+After pulling frontend changes, run `npm run build` again to update the public
+site. The development server on 5173 is separate. These detached processes do
+not automatically start after a server reboot. The current public service log
+is `.rag/public-web.log` and the PID is in `.rag/public-web.pid`.
+
+As of 2026-10-13, the original `datasets/hackathon` directory is missing. The
+public site uses retained exports in `public/observations`. Preserve the current
+RAG index; restore the source datasets before following the full knowledge
+refresh/rebuild workflow that reads them.
+
 ## Model configuration
 
 Copy `chat.config.example.json` to **`chat.config.local.json`** to override defaults;

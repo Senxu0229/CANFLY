@@ -30,4 +30,4 @@ farmland damage, or light blue as confirmed inundation. The code variable
 
 - `scripts/analyze_water.py`; SHA256 `546dc6b0a2691bd003428e8771afe20b43c14dee9324acc837196f76b1b55633`.
 - `public/observations/analysis_report_7b1444e7f771.json`; SHA256 `ebd63f760b8b18e98f5d04bd1292867e1d020a2178976f985b8c29ea5c4dcf58`.
-- `shared/water_classes.json`; SHA256 `65535eb26c215b45b3397f8533e0d3b0fcb02d66b54944c0855b89dbdecf2196`.
+- `shared/water_classes.json`; SHA256 `7dbbaa5e6edb96ca003d4ed70501f15fb533e1d24291549585796bb701353770`.
